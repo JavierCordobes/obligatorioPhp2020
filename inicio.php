@@ -7,7 +7,13 @@
         
 
         <!-- HEADER -->
-        <?php include('header.php') ?>
+        <?php 
+            if(!empty($_GET)) {
+
+                $tipo = $_GET["type"];
+                include("header.php");
+            }
+        ?>
 
 
         
