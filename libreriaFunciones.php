@@ -39,10 +39,17 @@
                 if($PIN == $pinBD){
 
                     cerrarConexion($conexion);
-                    header("Location: inicio.php?type=en");
+                    header("Location: inicio.php?type=en&ci=$ciBD");
                     die();
+                } else {
+
+                    echo "Cedula y PIN no coinciden, pruebe nuevamente.";
                 }
+            } else {
+
+                echo "Cedula y PIN no coinciden, pruebe nuevamente.";
             }
+
         } else if($tipo == "tr"){
 
             $resultado = mysqli_query($conexion, "SELECT cedula, pin FROM transportista WHERE cedula = $CI");
@@ -57,11 +64,65 @@
                 if($PIN == $pinBD){
 
                     cerrarConexion($conexion);
-                    header("Location: inicio.php?type=tr");
+                    header("Location: inicio.php?type=tr&ci=$ciBD");
                     die();
-                }
+                } else {
+
+                    echo "Cedula y PIN no coinciden, pruebe nuevamente.";
+                } 
+            } else {
+
+                echo "Cedula y PIN no coinciden, pruebe nuevamente.";
             }
+
+        } else if($tipo == "vs"){
+
+            cerrarConexion($conexion);
+            header("Location: inicio.php?type=vs");
+            die();
+        } else {
+
+            //Podriamos hace una pagina de error para que cuando pase algo asi redirigir con un dato clave para ver el tipo de error y notificar
+            echo "Mostrar mensaje de error";
         }
+    }
+
+    function buscarNombre($ci, $tipo){
+
+        if($tipo == "en"){
+            $tabla = "encargado";
+
+        } else if($tipo == "tr") {
+            $tabla = "transportista";
+
+        } else {
+            echo "mensaje de error";
+            die();
+        }
+
+        $conexion = conectarSQL();
+        if(!$conexion)
+          die("Error en la conexion al servidor");
+
+        $conexionBD = conectarBD($conexion, "Obligatorio");
+        if(!$conexionBD)
+          die("Error en la conexion a la base de datos");
+
+        $resultado = mysqli_query($conexion, "SELECT nombres FROM $tabla WHERE cedula = $ci");
+            
+        if($resultado){
+
+            $filaAsociativa = mysqli_fetch_array($resultado);
+
+            $nomBD = $filaAsociativa["nombres"];
+
+            return $nomBD;
+
+        } else {
+
+            echo "Ocurrio un error en la consulta.";
+        }
+
     }
 
 

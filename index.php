@@ -4,7 +4,6 @@
   <body class="">
     <div id="cont">
 
-        
 
 
         
@@ -15,8 +14,8 @@
       <!-- form login -->
       <form class="login" action="" method="POST" name="login">
 
-          <input class="form-control" name="cedula" type="text" required value="" placeholder="Cedula">
-          <input class="form-control" name="pin" type="password" required value="" placeholder="PIN">
+          <input class="form-control" name="cedula" type="text" placeholder="Cedula">
+          <input class="form-control" name="pin" type="password"  placeholder="PIN">
           <input type="submit" name="ingresar" id="ingresar" value="INGRESAR">
 
       </form>
@@ -38,12 +37,22 @@
 
             if(!empty($_POST)) {
 
-              $CI = $_POST["cedula"];
-              $PIN = $_POST["pin"];
-              //Hay que agregar el %tipo que viene de los radio button, de por mientras solo se puede cambiar el tipo desde aca
-              $tipo = "tr";
+              //Hay que agregar el $tipo que viene de los radio button, de por mientras solo se puede cambiar el tipo desde aca
+              $tipo = "vs";
 
-              ingreso($CI, $PIN, $conexion, $tipo);
+              if($tipo == "vs"){
+
+                ingreso("", "", $conexion, $tipo);
+              } else {
+
+                $CI = $_POST["cedula"];
+                $PIN = $_POST["pin"];
+                ingreso($CI, $PIN, $conexion, $tipo);
+              }
+
+            } else {
+
+              echo "No se encontraron datos.";
             }
             
           }

@@ -1,5 +1,6 @@
 
-  <?php include('head.php') ?>
+  <?php include('head.php');
+        include('libreriaFunciones.php'); ?>
 
   <body class="">
     <div id="cont">
@@ -11,6 +12,12 @@
             if(!empty($_GET)) {
 
                 $tipo = $_GET["type"];
+                if($tipo != "vs"){
+                    $ci = $_GET["ci"];
+                    $nom = buscarNombre($ci, $tipo);
+                } else {
+                    $nom = "Visitante";
+                }
                 include("header.php");
             }
         ?>
