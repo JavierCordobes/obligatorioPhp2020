@@ -125,5 +125,52 @@
 
     }
 
+    function buscarPaquete($codigo, $conexion) {
+
+        $consulta = mysqli_query($conexion, "SELECT estado, fechaEstimada, fechaEntrega FROM paquete WHERE codigo = '$codigo'");
+
+        if($consulta){
+
+            $filaAsociativa = mysqli_fetch_array($consulta);
+
+            //Mira que el estado del paquete no este vacio, si esta se informa que no se encontro
+            if(empty($filaAsociativa["estado"])){
+                
+                echo "No se encontro el paquete";
+            //Buscamos la fecha estimada, si esta entonces mandamos la fecha estimada del paquete
+            } else if (!empty($filaAsociativa["fechaEstimada"])){
+                
+
+                $resu = array (
+                    "estado" => $filaAsociativa["estado"],
+                    "fechaPaquete" => $filaAsociativa["fechaEstimada"],
+                );
+                return $resu;
+            //Buscamos la fecha de entrega, si esta entonces mandamos la fecha estimada del paquete
+            } else if(!empty($filaAsociativa["fechaEntrega"])){
+            
+                $resu = array (
+                    "estado" => $filaAsociativa["estado"],
+                    "fechaPaquete" => $filaAsociativa["fechaEntrega"],
+                );
+                return $resu;
+            //Si no estan ninguna de las fechas entonces el paquete no esta asignado y solo le mandamos el estado
+            } else {
+
+                $resu = array (
+                    "estado" => $filaAsociativa["estado"],
+                );
+                return $resu;
+            }
+
+            
+        } else {
+
+            echo "Ocurrio un error en la consulta.";
+        }
+         
+
+    }
+
 
 ?>

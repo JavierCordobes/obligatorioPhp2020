@@ -17,7 +17,7 @@
 
 						echo "<!-- menú -->";
 						echo "<nav>";
-							echo "<a href='inicio.php?type=$tipo'>Inicio</a>";
+							echo "<a href='inicio.php?type=$tipo&ci=$ci'>Inicio</a>";
 							echo "<a href=''>ABM de paquetes</a>";
 							echo "<a href=''>ABM de transportistas</a>";
 							echo "<a href=''>Historial de envios</a>";
@@ -33,7 +33,7 @@
 
 						echo "<!-- menú -->";
 						echo "<nav>";
-							echo "<a href='inicio.php?type=$tipo'>Inicio</a>";
+							echo "<a href='inicio.php?type=$tipo&ci=$ci'>Inicio</a>";
 							echo "<a href=''>Asignacion de paquetes</a>";
 							echo "<a href=''>Historial de envios</a>";
 						echo "</nav>";
