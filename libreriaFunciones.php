@@ -12,7 +12,18 @@
         return mysqli_select_db($conexion, $bd);
 
     }
-    
+
+    /*
+    crearConexion($ip, $user, $pass, $bd){
+
+        $conexion = mysqli_connect($ip, $user, $pass, $bd);
+        if($conexion)
+            return $conexion;
+        else
+            return "error";
+    }
+    */
+
     function cerrarConexion($conexion){
 
         mysqli_close($conexion);
@@ -21,11 +32,12 @@
 
 
     function ingreso($CI, $PIN, $conexion, $tipo){
-
+        
+        session_start();
 
         if($tipo == "en"){
 
-            $resultado = mysqli_query($conexion, "SELECT cedula, pin FROM encargado WHERE cedula = $CI");
+            $resultado = mysqli_query($conexion, "SELECT cedula, pin, nombres, apellidos FROM encargado WHERE cedula = '$CI'");
             
             if($resultado){
 
@@ -33,11 +45,18 @@
     
                 $ciBD = $filaAsociativa["cedula"];
                 $pinBD = $filaAsociativa["pin"];
+                $nomBD = $filaAsociativa["nombres"];
+                $apeBD = $filaAsociativa["apellidos"];
 
                 if($PIN == $pinBD){
 
+                    $_SESSION["cedula"] = $ciBD;
+                    $_SESSION["nombre"] = $nomBD;
+                    $_SESSION["apellido"] = $apeBD;
+                    $_SESSION["tipo"] = "en";
+
                     cerrarConexion($conexion);
-                    header("Location: inicio.php?type=en&ci=$ciBD&m=1");
+                    header("Location: inicio.php?m=1");
                     die();
                 } else {
 
@@ -50,7 +69,7 @@
 
         } else if($tipo == "tr"){
 
-            $resultado = mysqli_query($conexion, "SELECT cedula, pin FROM transportista WHERE cedula = $CI");
+            $resultado = mysqli_query($conexion, "SELECT cedula, pin, nombres, apellidos FROM transportista WHERE cedula = '$CI'");
                 
             if($resultado){
 
@@ -58,11 +77,20 @@
 
                 $ciBD = $filaAsociativa["cedula"];
                 $pinBD = $filaAsociativa["pin"];
+                $nomBD = $filaAsociativa["nombres"];
+                $apeBD = $filaAsociativa["apellidos"];
+
 
                 if($PIN == $pinBD){
 
+                    //ingreso de datos a session
+                    $_SESSION["cedula"] = $ciBD;
+                    $_SESSION["nombre"] = $nomBD;
+                    $_SESSION["apellido"] = $apeBD;
+                    $_SESSION["tipo"] = "tr";
+
                     cerrarConexion($conexion);
-                    header("Location: inicio.php?type=tr&ci=$ciBD&m=1");
+                    header("Location: inicio.php?m=1");
                     die();
                 } else {
 
@@ -74,9 +102,10 @@
             }
 
         } else if($tipo == "vs"){
-
+            
+            $_SESSION["tipo"] = "vs";
             cerrarConexion($conexion);
-            header("Location: inicio.php?type=vs");
+            header("Location: inicio.php");
             die();
         } else {
 
@@ -85,41 +114,12 @@
         }
     }
 
-    function buscarNombre($ci, $tipo){
+    function cerrarSesion(){
 
-        if($tipo == "en"){
-            $tabla = "encargado";
-
-        } else if($tipo == "tr") {
-            $tabla = "transportista";
-
-        } else {
-            echo "mensaje de error";
-            die();
-        }
-
-        $conexion = conectarSQL();
-        if(!$conexion)
-          die("Error en la conexion al servidor");
-
-        $conexionBD = conectarBD($conexion, "Obligatorio");
-        if(!$conexionBD)
-          die("Error en la conexion a la base de datos");
-
-        $resultado = mysqli_query($conexion, "SELECT nombres FROM $tabla WHERE cedula = $ci");
-            
-        if($resultado){
-
-            $filaAsociativa = mysqli_fetch_array($resultado);
-
-            $nomBD = $filaAsociativa["nombres"];
-
-            return $nomBD;
-
-        } else {
-
-            echo "Ocurrio un error en la consulta.";
-        }
+        session_unset();
+        session_destroy();
+        echo "<meta http-equiv='refresh' content='0.3;url=index.php'>";
+        die();
 
     }
 
@@ -282,7 +282,7 @@
 
         if($consulta){
 
-            echo "<meta http-equiv='refresh' content='0.3;url=inicio.php?type=tr&ci=$ciTransportista&m=1'>";
+            echo "<meta http-equiv='refresh' content='0.3;url=inicio.php?m=1'>";
             die();
         } else {
             echo "Ocurrio un error en la consulta";
@@ -290,9 +290,9 @@
     }
 
     //Muestra la informacion de los paquetes, se usa para trnasportista y encargado
-    function paquetesAsignados($conexion, $ciTransportista = 0){
+    function paquetesAsignados($conexion, $ciTransportista = 'n'){
 
-        if($ciTransportista == 0){
+        if($ciTransportista == 'n'){
             
             $query = "SELECT codigo, dirRemitente, dirEnvio, fragil, perecedero, fechaEstimada, estado, fechaAsignacion, ciTransportista FROM paquete WHERE estado = 'Asignado'";
         } else {
@@ -308,7 +308,7 @@
 
             if($cant_filas == 0){
 
-                if($ciTransportista == 0){
+                if($ciTransportista == 'n'){
 
                     echo "No tiene paquetes asignados";
                 }else{
@@ -351,7 +351,7 @@
                         $array[$i]["fechaAsignacion"] = $fechaAsignacion;
 
 
-                        if($ciTransportista == 0){
+                        if($ciTransportista == 'n'){
 
                             $ciTr = $filaAsociativa["ciTransportista"];
                             $consultaTr = mysqli_query($conexion, "SELECT nombres, apellidos FROM transportista WHERE cedula = $ciTr");
@@ -362,7 +362,7 @@
                                 $nombre = $filaAsociativaTr["nombres"];
                                 $apellido = $filaAsociativaTr["apellidos"];
 
-                                $nombreCompleto = $nombre . $apellido;
+                                $nombreCompleto = $nombre . " " . $apellido;
 
                                 $array[$i]["ciTransportista"] = $ciTr;
                                 $array[$i]["nombreCompleto"] = $nombreCompleto;
@@ -417,16 +417,16 @@
             echo "Ocurrio un error en la consulta";
         } else {
 
-            echo "<meta http-equiv='refresh' content='0.3;url=inicio.php?type=tr&ci=$ciTransportista&m=1'>";
+            echo "<meta http-equiv='refresh' content='0.3;url=inicio.php?m=1'>";
             die();
         }
     }
 
-    function historialPaquetes($conexion, $ciTransportista = 0){
+    function historialPaquetes($conexion, $ciTransportista = 'n'){
 
         $resu = array();
         //Primero busco los paquetes asignados
-        if($ciTransportista == 0)      
+        if($ciTransportista == 'n')      
             $consulta1 = mysqli_query($conexion, "SELECT codigo, fechaEstimada, estado, ciTransportista FROM paquete WHERE estado = 'Asignado'");
         else 
             $consulta1 = mysqli_query($conexion, "SELECT codigo, fechaEstimada, estado FROM paquete WHERE estado = 'Asignado' AND ciTransportista = '$ciTransportista'");
@@ -446,9 +446,25 @@
                     $codigo = $filaAsociativa["codigo"];
                     $fechaEstimada = $filaAsociativa["fechaEstimada"];
                     $estado = $filaAsociativa["estado"];
-                    if($ciTransportista == 0){
-                        $ciTransportista = $filaAsociativa["ciTransportista"];
-                        $array1[$i]["ciTransportista"] = $ciTransportista;
+                    
+                    if($ciTransportista == 'n'){
+
+                        $ciTr = $filaAsociativa["ciTransportista"];
+                        $array1[$i]["ciTransportista"] = $ciTr;
+
+                        $consultaTr = mysqli_query($conexion, "SELECT nombres, apellidos FROM transportista WHERE cedula = $ciTr");
+
+                        if($consultaTr){
+
+                            $filaAsociativaTr = mysqli_fetch_array($consultaTr);
+                            $nombre = $filaAsociativaTr["nombres"];
+                            $apellido = $filaAsociativaTr["apellidos"];
+
+                            $nombreCompleto = $nombre . " " . $apellido;
+
+                            $array1[$i]["nombreCompleto"] = $nombreCompleto;
+
+                        }
                     }
 
 
@@ -469,8 +485,8 @@
         }
 
         //Despues hago lo mismo pero con los paquetes asignados previamente al Transportista y el resto para el Encargado
-        if($ciTransportista == 0)      
-            $consulta2 = mysqli_query($conexion, "SELECT codigo, fechaEntrega, estado, ciTransportista FROM paquete");
+        if($ciTransportista == 'n')      
+            $consulta2 = mysqli_query($conexion, "SELECT codigo, fechaEntrega, estado, ciTransportista FROM paquete WHERE estado = 'Entregado'");
         else 
             $consulta2 = mysqli_query($conexion, "SELECT codigo, fechaEntrega, estado FROM paquete WHERE estado = 'Entregado' AND ciTransportista = '$ciTransportista'");
 
@@ -488,27 +504,32 @@
 
                     $codigo = $filaAsociativa["codigo"];
                     $estado = $filaAsociativa["estado"];
+                    $fechaEntrega = $filaAsociativa["fechaEntrega"];
                     
                     $array2[$i]["codigo"] = $codigo;
                     $array2[$i]["estado"] = $estado;
+                    $array2[$i]["fechaEntrega"] = $fechaEntrega;
 
-                    if($ciTransportista == 0){
 
-                        $ciTransportista = $filaAsociativa["ciTransportista"];
-                        $array2[$i]["ciTransportista"] = $ciTransportista;
+                    if($ciTransportista == 'n'){
 
-                        //Guardo la fecha de entrega solamente si la tiene, para evitar errores con los paquetes no asignados, luego hago lo mismo en el inicio para filtrar en el historial de encargado
-                        if(!empty($filaAsociativa["fechaEntrega"])){
-                            
-                            $fechaEntrega = $filaAsociativa["fechaEntrega"];
-                            $array2[$i]["fechaEntrega"] = $fechaEntrega;
+                        $ciTr = $filaAsociativa["ciTransportista"];
+                        $array2[$i]["ciTransportista"] = $ciTr;
+
+                        $consultaTr = mysqli_query($conexion, "SELECT nombres, apellidos FROM transportista WHERE cedula = $ciTr");
+
+                        if($consultaTr){
+
+                            $filaAsociativaTr = mysqli_fetch_array($consultaTr);
+                            $nombre = $filaAsociativaTr["nombres"];
+                            $apellido = $filaAsociativaTr["apellidos"];
+
+                            $nombreCompleto = $nombre . " " . $apellido;
+
+                            $array2[$i]["nombreCompleto"] = $nombreCompleto;
+
                         }
-                    } else {
-
-                        $fechaEntrega = $filaAsociativa["fechaEntrega"];
-                        $array2[$i]["fechaEntrega"] = $fechaEntrega;
                     }
-    
                 }
 
                 $resu[1] = $array2;
@@ -518,6 +539,35 @@
         } else {
 
             echo "Error en la consulta de paquetes";
+        }
+
+        if($ciTransportista == 'n'){
+            $consulta3 = mysqli_query($conexion, "SELECT codigo, estado FROM paquete WHERE estado = 'No asignado'");
+
+            if($consulta3){
+        
+                $cant_filas = mysqli_num_rows($consulta3);
+    
+                if($cant_filas > 0){
+    
+                    $array3 = array();
+    
+                    for($i = 0; $i < $cant_filas; $i++){
+    
+                        $filaAsociativa = mysqli_fetch_array($consulta3);
+    
+                        $codigo = $filaAsociativa["codigo"];
+                        $estado = $filaAsociativa["estado"];
+                        
+                        $array3[$i]["codigo"] = $codigo;
+                        $array3[$i]["estado"] = $estado;
+            
+                    }
+
+                    $resu[2] = $array3;
+
+                }
+            }
         }
 
         return $resu;
