@@ -50,7 +50,7 @@
         if(!empty($_POST)) {
 
           //Hay que agregar el $tipo que viene de los radio button, de por mientras solo se puede cambiar el tipo desde aca
-          $tipo = "tr";
+          $tipo = "en";
 
           if($tipo == "vs"){
 
