@@ -162,15 +162,15 @@
                                         $timestamp = strtotime($fechaArray);
                                         $fechaAsignacion = date("d/m/Y", $timestamp);
 
-                                        echo "<tr><td align=center>" . $codigo;
-                                        echo "<td align=center>" . $dirRemitente;
-                                        echo "<td align=center>" . $dirEnvio;
-                                        echo "<td align=center>" . $fragil;
-                                        echo "<td align=center>" . $perecedero;
-                                        echo "<td align=center>" . $fechaEstimada;
-                                        echo "<td align=center>" . $estado;
-                                        echo "<td align=center>" . $fechaAsignacion;
-                                        echo "<td align=center> <a href='inicio.php?type=$tipo&ci=$ci&m=1&n=0'>Marcar como entregado</a></td></tr><br>";
+                                        echo "<tr><td align=center>" . $codigo . "</td>";
+                                        echo "<td align=center>" . $dirRemitente . "</td>";
+                                        echo "<td align=center>" . $dirEnvio . "</td>";
+                                        echo "<td align=center>" . $fragil . "</td>";
+                                        echo "<td align=center>" . $perecedero . "</td>";
+                                        echo "<td align=center>" . $fechaEstimada . "</td>";
+                                        echo "<td align=center>" . $estado . "</td>";
+                                        echo "<td align=center>" . $fechaAsignacion . "</td>";
+                                        echo "<td align=center> <a href='inicio.php?m=1&n=0'>Marcar como entregado</a></td></tr><br>";
                                         echo "</table>";
 
                                         if(isset($_GET["n"])){
@@ -257,12 +257,12 @@
                                                 $perecedero = "No";
                             
 
-                                            echo "<tr><td align=center>" . $codigo;
-                                            echo "<td align=center>" . $dirRemitente;
-                                            echo "<td align=center>" . $dirEnvio;
-                                            echo "<td align=center>" . $fragil;
-                                            echo "<td align=center>" . $perecedero;
-                                            echo "<td align=center> <a href='inicio.php?type=$tipo&ci=$ci&m=5&n=$i'>Asignar</a></tr>";
+                                            echo "<tr><td align=center>" . $codigo . "</td>";
+                                            echo "<td align=center>" . $dirRemitente . "</td>";
+                                            echo "<td align=center>" . $dirEnvio . "</td>";
+                                            echo "<td align=center>" . $fragil . "</td>";
+                                            echo "<td align=center>" . $perecedero . "</td>";
+                                            echo "<td align=center> <a href='inicio.php?m=5&n=$i'>Asignar</a></td></tr>";
 
                                         }
 
