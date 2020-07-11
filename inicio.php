@@ -658,25 +658,22 @@
                                                 $apellidos = $arrayLista[$i]["apellidos"];
                                                 $direccion = $arrayLista[$i]["direccion"];
                                                 $telefono = $arrayLista[$i]["telefono"];
-                                                //$foto = $arrayLista[$i]["foto"];
+                                                $foto = $arrayLista[$i]["foto"];
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                 if($conexion == '1')
                                                     echo "Hubo un error al conectarnos a la base de datos";
                                                 else{
-                                                    /*
-                                                    $asignado = tienePaqueteAsignado($conexion, $cedula);
-
-                                                    if($asignado)
-                                                        echo "Tiene un paquete asignado, debe desasignarse antes";
-                                                    */
+                                                    
                                                     echo "<tr><td align=center>" . $cedula . "</td>";
                                                     echo "<td align=center>" . $nombres . "</td>";
                                                     echo "<td align=center>" . $apellidos . "</td>";
                                                     echo "<td align=center>" . $direccion . "</td>";
                                                     echo "<td align=center>" . $telefono . "</td>";
-                                                    echo "<td align=center>" . /* Agregar foto*/ "" . "</td>";
-                                                    //Hacer el img src = $foto
+                                                    if(!empty($foto))
+                                                        echo "<td><img src='$foto' width=50 height=80 alt='Imagen no encontrada' /></td>";
+                                                    else
+                                                        echo "<td></td>";
                                                     echo "<td align=center><a href='inicio.php?m=3&n=$i'>Modificar</a></td>";
                                                     echo "<td align=center><a href='inicio.php?m=3&n=$i&d=1'>Eliminar</a></td></tr>";
                                                 }
@@ -715,7 +712,7 @@
                                                         $apellidos = $arrayLista[$numTransportista]["apellidos"];
                                                         $direccion = $arrayLista[$numTransportista]["direccion"];
                                                         $telefono = $arrayLista[$numTransportista]["telefono"];
-                                                        //$foto = $arrayLista[$numTransportista]["foto"];
+                                                        $foto = $arrayLista[$numTransportista]["foto"];
 
 
                                                         echo "<form method=POST name=modificar>";
@@ -724,9 +721,9 @@
                                                         echo "Apellidos: <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' value=$apellidos required><br>";
                                                         echo "Direccion: <input type=text name=direccion placeholder='Ingresar direccion del transportista' value=$direccion required><br>";
                                                         echo "Telefono: <input type=text name=telefono placeholder='Ingrese telefono del transportista' value=$telefono required><br>";
-                                                        //Agregar lo de foto
+                                                        echo "Foto: <input type='file' name='foto' src='$foto' width='70' height='100' alt='Imagen no encontrada' required><br>";
                                                                   
-                                                        echo "<input type=submit name=modificar id=modificar value='Modificar datos de Transportista'>";
+                                                        echo "<input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>";
                                                         echo "</form>";
 
                                                         if(array_key_exists("modificar", $_POST)){
@@ -738,7 +735,42 @@
                                                                 $apellidos = $_POST["apellidos"];
                                                                 $direccion = $_POST["direccion"];
                                                                 $telefono = $_POST["telefono"];
-                                                                //Agregar foto
+                                                                $foto = "";
+
+                                                                if (is_uploaded_file($_FILES['foto']['tmp_name'])){
+    
+                                                                    if ($_FILES["foto"]["error"] > 0) {
+                                                        
+                                                                        echo "Error: " . $_FILES["foto"]["error"] . "<br>";
+                                                                    } else {
+                                                        
+                                                                        $tmp_name = $_FILES["foto"]["tmp_name"];
+                                                                        $ruta = 'C:/wamp/www/Obligatorio/Fotos/Transportista';
+                                                                        $nombre =  $_FILES["foto"]["name"];
+                                                                        $extension = explode ("." , $_FILES["foto"]["name"]);
+                                                                        $extensionTipo = array('jpg','jpe','jpeg','png');
+                                                        
+                                                                        $subio = false;
+                
+                                                                        for($i = 0; $i < 4; $i++){
+                                                        
+                                                                            $tamanio = count($extension) - 1;
+                                                                            if($extension[$tamanio] == $extensionTipo[$i]){
+
+                                                                                $move = $ruta."//".$nombre;
+                                                                                
+                                                                                if(move_uploaded_file($tmp_name, $move))
+                                                                                    $subio = true;
+                                                                        
+                                                                            }   
+                                                                        }
+                                                                        if (!$subio)
+                                                                            echo "El tipo de archivo no es compatible";
+                                                                        else 
+                                                                            $foto = "C://wamp//www//Obligatorio//Fotos//Transportista//$nombre";
+                                                        
+                                                                    }
+                                                                }
 
                                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                                 if($conexion == '1')
@@ -759,17 +791,16 @@
 
                                     if(isset($_GET["a"])){
 
-                                        echo "<form method=POST name=agregar>";
+                                        echo "<form method=POST name=agregar enctype='multipart/form-data'>";
                                         echo "Cedula: <input type=text name=cedula placeholder='Ingresar cedula del transportista' required><br>";
                                         echo "Nombres: <input type=text name=nombres placeholder='Ingrese nombres del transportista' required><br>";
                                         echo "Apellidos: <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' required><br>";
                                         echo "Direccion: <input type=text name=direccion placeholder='Ingresar direccion del transportista' required><br>";
                                         echo "Telefono: <input type=text name=telefono placeholder='Ingrese telefono del transportista' required><br>";
                                         echo "PIN: <input type=text name=pin placeholder='Ingrese PIN para iniciar su sesion' required><br>";
-
-                                        //Agregar lo de foto
+                                        echo "Foto: <input type='file' name='foto' required><br>";
                                                     
-                                        echo "<input type=submit name=agregar id=agregar value='Agregar Transportista'>";
+                                        echo "<input type=submit name=agregar id=agregar value='Agregar Transportista'><br>";
                                         echo "</form>";
 
                                         if(array_key_exists("agregar", $_POST)){
@@ -782,14 +813,48 @@
                                                 $direccion = $_POST["direccion"];
                                                 $telefono = $_POST["telefono"];
                                                 $pin = $_POST["pin"];
+                                                $foto = "";
 
-                                                //Agregar foto
+                                                if (is_uploaded_file($_FILES['foto']['tmp_name'])){
+    
+                                                    if ($_FILES["foto"]["error"] > 0) {
+                                        
+                                                        echo "Error: " . $_FILES["foto"]["error"] . "<br>";
+                                                    } else {
+                                        
+                                                        $tmp_name = $_FILES["foto"]["tmp_name"];
+                                                        $ruta = 'C:/wamp/www/Obligatorio/Fotos/Transportista';
+                                                        $nombre =  $_FILES["foto"]["name"];
+                                                        $extension = explode ("." , $_FILES["foto"]["name"]);
+                                                        $extensionTipo = array('jpg','jpe','jpeg','png');
+                                        
+                                                        $subio = false;
+
+                                                        for($i = 0; $i < 4; $i++){
+                                        
+                                                            $tamanio = count($extension) - 1;
+                                                            if($extension[$tamanio] == $extensionTipo[$i]){
+                                                                
+                                                                $move = $ruta."/".$nombre;
+                                                                                
+                                                                if(move_uploaded_file($tmp_name, $move))
+                                                                    $subio = true;
+                                                        
+                                                            }   
+                                                        }
+                                                        if (!$subio)
+                                                            echo "El tipo de archivo no es compatible";
+                                                        else 
+                                                            $foto = 'Fotos/Transportista/' . $nombre;
+                                        
+                                                    }
+                                                }
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                 if($conexion == '1')
                                                     echo "Hubo un error al conectarnos a la base de datos";
 
-                                                agregarTransportista($conexion, $cedulaTransportista, $nombres, $apellidos, $direccion, $telefono, "", $pin); //Agregar foto
+                                                agregarTransportista($conexion, $cedulaTransportista, $nombres, $apellidos, $direccion, $telefono, $foto, $pin);
                                     
                                             } else {
                                     
@@ -947,8 +1012,7 @@
 
 
         <!-- FOOTER -->
-        <?php include('footer.php') ?>
-
+        <?php //include('footer.php') Lo saco porque si se va a agregar un paquete, etc y ya hay varios no deja apretar el boton jajaja?>
 
 
     </div>

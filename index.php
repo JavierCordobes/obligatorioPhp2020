@@ -14,7 +14,7 @@
       <!-- form login -->
       <form class="login" action="" method="POST" name="login">
 
-        <input name="tipo" type="radio" id="visitante" class="radio" value="vs">
+        <input name="tipo" type="radio" id="visitante" class="radio" value="vs" required>
           <label for="visitante" class="radio">VISITANTE</label>
 
         <input name="tipo" type="radio" id="transportista" class="radio" value="tr">
@@ -50,7 +50,7 @@
         if(!empty($_POST)) {
 
           //Hay que agregar el $tipo que viene de los radio button, de por mientras solo se puede cambiar el tipo desde aca
-          $tipo = "en";
+          $tipo = $_POST["tipo"];
 
           if($tipo == "vs"){
 

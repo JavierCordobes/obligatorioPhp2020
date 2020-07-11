@@ -31,8 +31,6 @@
 
     function ingreso($CI, $PIN, $conexion, $tipo){
         
-        session_start();
-
         if($tipo == "en"){
 
             $resultado = mysqli_query($conexion, "SELECT cedula, pin, nombres, apellidos FROM encargado WHERE cedula = '$CI' AND eliminado = '0'");
@@ -48,6 +46,7 @@
 
                 if($PIN == $pinBD){
 
+                    session_start();
                     $_SESSION["cedula"] = $ciBD;
                     $_SESSION["nombre"] = $nomBD;
                     $_SESSION["apellido"] = $apeBD;
@@ -73,6 +72,7 @@
 
                 $filaAsociativa = mysqli_fetch_array($resultado);
 
+                
                 $ciBD = $filaAsociativa["cedula"];
                 $pinBD = $filaAsociativa["pin"];
                 $nomBD = $filaAsociativa["nombres"];
@@ -82,6 +82,7 @@
                 if($PIN == $pinBD){
 
                     //ingreso de datos a session
+                    session_start();
                     $_SESSION["cedula"] = $ciBD;
                     $_SESSION["nombre"] = $nomBD;
                     $_SESSION["apellido"] = $apeBD;
@@ -101,6 +102,7 @@
 
         } else if($tipo == "vs"){
             
+            session_start();
             $_SESSION["tipo"] = "vs";
             cerrarConexion($conexion);
             header("Location: inicio.php");
@@ -724,14 +726,14 @@
                     $apellidos = $filaAsociativa["apellidos"];
                     $direccion = $filaAsociativa["direccion"];
                     $telefono = $filaAsociativa["telefono"];
-                    //$foto = $filaAsociativa["foto"]; Hay que agregar la carpeta con las fotos
+                    $foto = $filaAsociativa["foto"];
 
                     $array[$i]["cedula"] = $ciTransportista;
                     $array[$i]["nombres"] = $nombres;
                     $array[$i]["apellidos"] = $apellidos;
                     $array[$i]["direccion"] = $direccion;
                     $array[$i]["telefono"] = $telefono;
-                    //$array[$i]["foto"] = $foto;
+                    $array[$i]["foto"] = $foto;
 
                 }
                 cerrarConexion($conexion);
@@ -759,7 +761,7 @@
             cerrarConexion($conexion);
             echo "El transportista se agrego exitosamente, regresando al inicio...";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
-            //die();
+            die();
         } else {
             echo "Ocurrio un error en la consulta";
         }
