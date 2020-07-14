@@ -45,17 +45,20 @@
         <main id="main" role="main">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
+                    
+
+                    <div class="col-md-12 text-center">
  
                         <?php
                         include_once('libreriaFunciones.php');
 
+
+                        //VISITANTE
                         if($tipo == "vs"){
 
                             echo '
                             <form method=POST name="estadoPaquete">
-                                <input name="codigo" type="text" placeholder="Codigo" required>
+                                <input name="codigo" type="text" placeholder="Codigo">
                                 <input type="submit" name="buscarPaquete" id="buscarPaquete" value="Buscar Paquete">
                             </form>';
 
@@ -71,17 +74,17 @@
                                     if($conexion == '1'){
                                         echo '<div class="msj error">Hubo un error al conectarnos a la base de datos</div>';
                                     } else {
-                                        
+
                                         $codigoBusqueda = $_POST["codigo"];
                     
                                         $msjPaquete = '';
                                         $arrayPaquete = buscarPaquete($codigoBusqueda, $conexion, $msjPaquete);
-    
+
                                         if(!empty($arrayPaquete)){
     
                                             $estadoPaquete = $arrayPaquete["estado"];
     
-                                            echo "Estado del paquete: $estadoPaquete. <br>";
+                                            echo "Estado del paquete: $estadoPaquete. ";
     
                                             if(!empty($arrayPaquete["fechaPaquete"])){
     
@@ -90,15 +93,16 @@
                                                 $fechaPaquete = date("d/m/Y", $timestamp);
     
                                                 if($estadoPaquete == "Asignado")
-                                                    echo "Fecha estimada de entrega: $fechaPaquete";
+                                                    echo "<div class='msj ok'>Fecha estimada de entrega: $fechaPaquete</div>";
                                                 else
-                                                    echo "Fecha de entrega: $fechaPaquete";
+                                                    echo "<div class='msj ok'>Fecha de entrega: $fechaPaquete</div>";
                                             }
                                         } else 
                                             echo '<div class="msj error">'.$msjPaquete.'</div>';
-                                    }    
+                                    }
                                 }
                             }
+                        // TRANSPORTISTA
                         } else if ($tipo == "tr"){
 
                             if(!empty($_GET["m"])){
@@ -109,7 +113,7 @@
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
+                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                     $arrayPaquetesAsignados = paquetesAsignados($conexion, $ci);
 
@@ -117,7 +121,7 @@
 
                                     if($cant_filas > 0){
 
-                                        echo "<table border=1><tr>";
+                                        echo "<table><tr>";
                                         echo "<tr><th align=center>Codigo</th>";
                                         echo "<th align=center>Dir. Remitente</th>";
                                         echo "<th align=center>Dir. Envio</th>";
@@ -169,7 +173,7 @@
 
                                             $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                             if($conexion == '1')
-                                                echo "Hubo un error al conectarnos a la base de datos";
+                                                echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                             
                                             $codigoPaqueteEntrega = $arrayPaquetesAsignados["0"]["codigo"];
 
@@ -183,7 +187,7 @@
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                 if($conexion == '1')
-                                                    echo "Hubo un error al conectarnos a la base de datos";
+                                                    echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                                 entregaPaqueteABD($conexion, $ci, $fechaEntrega, $codigoPaqueteEntrega);
                                                     
@@ -195,7 +199,7 @@
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
+                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                     
                                     $msjPaqueteNo = "";
                                     $arrayPaquetesNoAsignados = paquetesNoAsignados($conexion, $msjPaqueteNo);
@@ -204,7 +208,7 @@
 
                                     if($cant_filas > 0){
                                         
-                                        echo "<table border=1><tr>";
+                                        echo "<table><tr>";
                                         echo "<tr><th align=center>Codigo</th>";
                                         echo "<th align=center>Dir. Remitente</th>";
                                         echo "<th align=center>Dir. Envio</th>";
@@ -251,7 +255,7 @@
 
                                         $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                         if($conexion == '1')
-                                            echo "Hubo un error al conectarnos a la base de datos";
+                                            echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                         
                                         asignarPaquete($conexion, $ci);
 
@@ -264,7 +268,7 @@
 
                                             $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                             if($conexion == '1')
-                                                echo "Hubo un error al conectarnos a la base de datos";
+                                                echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                             asignacionDePaqueteABD($conexion, $ci, $codigoPaqueteAsignacion, $fechaEstimadaAsignacion);
                                                 
@@ -276,7 +280,7 @@
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
+                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                     
                                     $arrayHistorial = historialPaquetes($conexion, $ci);
 
@@ -287,7 +291,7 @@
 
                                             if($cant_filas1 > 0){
 
-                                                echo "<table border=1><tr>";
+                                                echo "<table><tr>";
                                                 echo "<tr><th align=center>Codigo</th>";
                                                 echo "<th align=center>Fecha de entrega / Fecha estimada de entrega</th>";
                                                 echo "<th align=center>Estado</th></tr>";
@@ -317,7 +321,7 @@
                                                 
                                                 if(!isset($cant_filas1)){
                                             
-                                                    echo "<table border=1><tr>";
+                                                    echo "<table><tr>";
                                                     echo "<tr><th align=center>Codigo</th>";
                                                     echo "<th align=center>Fecha de entrega / Fecha estimada de entrega</th>";
                                                     echo "<th align=center>Estado</th></tr>";
@@ -346,10 +350,13 @@
                                             }
                                         }
                                     } else 
-                                        echo "No tiene paquetes entregados o por entregar";
+                                        echo "<div class='msj alerta'>No tiene paquetes entregados o por entregar</div>";
 
                                 }
                             } 
+
+
+                        // ENCARGADO
                         } else if ($tipo == "en"){
 
                             if(!empty($_GET["m"])){
@@ -360,7 +367,7 @@
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
+                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                     $arrayPaquetesAsignados = paquetesAsignados($conexion);
 
@@ -368,7 +375,7 @@
 
                                     if($cant_filas > 0){
 
-                                        echo "<table border=1><tr>";
+                                        echo "<table><tr>";
                                         echo "<tr><th align=center>Codigo</th>";
                                         echo "<th align=center>Dir. Remitente</th>";
                                         echo "<th align=center>Dir. Envio</th>";
@@ -426,12 +433,12 @@
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
+                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                     
                                     $arrayLista = listaPaquetes($conexion);
     
 
-                                    echo "<a href='inicio.php?m=2&a=1'>Agregar un paquete</a><br>";
+                                    echo "<a class='btn' href='inicio.php?m=2&a=1'>Agregar un paquete</a><br>";
 
                                     if($arrayLista != null){
 
@@ -439,7 +446,7 @@
     
                                         if($cant_filas > 0){
 
-                                            echo "<table border=1><tr>";
+                                            echo "<table><tr>";
                                             echo "<tr><th align=center>Codigo</th>";
                                             echo "<th align=center>Dir. Remitente</th>";
                                             echo "<th align=center>Dir. Envio</th>";
@@ -529,7 +536,7 @@
 
                                                         $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                         if($conexion == '1')
-                                                            echo "Hubo un error al conectarnos a la base de datos";
+                                                            echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                                         $codigoPaquete = $arrayLista[$numPaquete]["codigo"];
 
@@ -545,19 +552,37 @@
 
 
                                                         echo "<form method=POST name=modificar>";
-                                                        echo "Codigo: <input type=text name=codigo placeholder='Ingresar codigo del paquete' value=$codigo required><br>";
-                                                        echo "Dir. Remitente: <input type=text name=dirRemitente placeholder='Ingrese Dir. del Remitente' value=$dirRemitente required><br>";
-                                                        echo "Dir. Envio: <input type=text name=dirEnvio placeholder='Ingrese Dir. de Envio' value=$dirEnvio required><br>";
+                                                        echo "<span>Codigo:</span> <input type=text name=codigo placeholder='Ingresar codigo del paquete' value=$codigo required><br>";
+                                                        echo "<span>Dir. Remitente:</span> <input type=text name=dirRemitente placeholder='Ingrese Dir. del Remitente' value=$dirRemitente required><br>";
+                                                        echo "<span>Dir. Envio:</span> <input type=text name=dirEnvio placeholder='Ingrese Dir. de Envio' value=$dirEnvio required><br>";
 
                                                         if($fragil)
-                                                            echo "Fragil: <input type=radio name=fragil value=1 checked required>Si " . "<input type=radio name=fragil value=0>No <br>";
+                                                            echo "<span>Fragil:</span> 
+                                                        <label class='radio' for='fragil-si'>SI</label>
+                                                        <input class='radio' id='fragil-si' type=radio name=fragil value=1 checked required>" . "
+                                                        <label class='radio' for='fragil-no'>SI</label>
+                                                        <input class='radio' id='fragil-no' type=radio name=fragil value=0>No <br>";
                                                         else   
-                                                            echo "Fragil: <input type=radio name=fragil value=1 required>Si " . "<input type=radio name=fragil value=0 checked>No <br>";
+                                                            echo "<span>Fragil:</span> 
+
+                                                        <label class='radio' for='fragil-si'>SI</label>
+                                                        <input class='radio' id='fragil-si' type=radio name=fragil value=1 required>Si " . 
+
+
+                                                        "
+                                                        <label class='radio' for='fragil-no'>SI</label>
+                                                        <input class='radio' id='fragil-no' type=radio name=fragil value=0 checked><br>";
 
                                                         if($perecedero)
-                                                            echo "Perecedero: <input type=radio name=perecedero value=1 checked required>Si " . "<input type=radio name=perecedero value=0>No <br>";
+                                                            echo "<span>Perecedero:</span> 
+                                                        <input type=radio name=perecedero value=1 checked required>" . 
+                                                        "<input type=radio name=perecedero value=0>No <br>";
                                                         else   
-                                                            echo "Perecedero: <input type=radio name=perecedero value=1 required>Si " . "<input type=radio name=perecedero value=0 checked>No <br>";
+                                                            echo "<span>Perecedero:</span> 
+
+                                                        <input type=radio name=perecedero value=1 required>Si " . 
+
+                                                        "<input type=radio name=perecedero value=0 checked>No <br>";
                                                         
                                                         echo "<input type=submit name=modificar id=modificar value='Modificar paquete'>";
                                                         echo "</form>";
@@ -575,14 +600,14 @@
 
                                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                                 if($conexion == '1')
-                                                                    echo "Hubo un error al conectarnos a la base de datos";
+                                                                    echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
         
                                                                 modificarPaquete($conexion, $codigoPaquete, $codigoModificado, $dirRemitente, $dirEnvio, $fragil, $perecedero);
         
                                                     
                                                             } else {
                                                     
-                                                                echo "No se encontraron datos.";
+                                                                echo "<div class='msj error'>No se encontraron datos.</div>";
                                                             }
                                                             
                                                         }
@@ -591,7 +616,7 @@
                                                 } else {
 
                                                     $ciTransportista = $arrayLista[$numPaquete]["ciTransportista"];
-                                                    echo "El paquete que quiere actualizar ya esta asignado a un transportista, su cedula es $ciTransportista";
+                                                    echo "<div class='msj error'>El paquete que quiere actualizar ya esta asignado a un transportista, su cedula es $ciTransportista</div>";
                                                 }
                                             }
                                         }
@@ -600,11 +625,11 @@
                                     if(isset($_GET["a"])){
 
                                         echo "<form method=POST name=agregar>";
-                                        echo "Codigo: <input type=text name=codigo placeholder='Ingrese el codigo del paquete' required><br>";
-                                        echo "Dir. Remitente: <input type=text name=dirRemitente placeholder='Ingrese Dir. de Remitente' required><br>";
-                                        echo "Dir. Envio: <input type=text name=dirEnvio placeholder=Ingrese 'Ingrese Dir. de Envio' required><br>";
-                                        echo "Fragil: <input type='radio' name='fragil' class='radio' value='1' checked required>Si " . "<input type='radio' name='fragil' class='radio' value='0'>No<br>";
-                                        echo "Perecedero: <input type='radio' name='perecedero' class='radio' value='1' checked required>Si " . "<input type='radio' name='perecedero' class='radio' value='0'>No<br>";                                        
+                                        echo "<span>Codigo:</span> <input type=text name=codigo placeholder='Ingrese el codigo del paquete' required><br>";
+                                        echo "<span>Dir. Remitente:</span> <input type=text name=dirRemitente placeholder='Ingrese Dir. de Remitente' required><br>";
+                                        echo "<span>Dir. Envio:</span> <input type=text name=dirEnvio placeholder=Ingrese 'Ingrese Dir. de Envio' required><br>";
+                                        echo "<span>Fragil:</span> <input type=radio name=fragil value=1 checked required>Si " . "<input type=radio name=fragil value=0>No<br>";
+                                        echo "<span>Perecedero:</span> <input type=radio name=perecedero value=1 checked required>Si " . "<input type=radio name=perecedero value=0>No<br>";                                        
                                         echo "<input type=submit name=agregar id=agregar value='Agregar paquete'>";
                                         echo "</form>";
 
@@ -620,13 +645,13 @@
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                 if($conexion == '1')
-                                                    echo "Hubo un error al conectarnos a la base de datos";
+                                                    echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                                 agregarPaquete($conexion, $codigoPaquete, $dirRemitente, $dirEnvio, 1, 0);
                                     
                                             } else {
                                     
-                                                echo "No se encontraron datos.";
+                                                echo "<div class='msj error'>No se encontraron datos.</div>";
                                             }
                                         }
                                     }
@@ -634,12 +659,12 @@
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
+                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                     
                                     $arrayLista = listaTransportistas($conexion);
     
 
-                                    echo "<a href='inicio.php?m=3&a=1'>Agregar un transportista</a><br>";
+                                    echo "<a class='btn' href='inicio.php?m=3&a=1'>Agregar un transportista</a><br>";
 
                                     if($arrayLista != null){
 
@@ -647,7 +672,7 @@
     
                                         if($cant_filas > 0){
 
-                                            echo "<table border=1><tr>";
+                                            echo "<table><tr>";
                                             echo "<tr><th align=center>Cedula</th>";
                                             echo "<th align=center>Nombres</th>";
                                             echo "<th align=center>Apellidos</th>";
@@ -667,17 +692,16 @@
                                                 $foto = $arrayLista[$i]["foto"];
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
-                                                if($conexion == '1'){
-                                                    $msjBD = "Hubo un error al conectarnos a la base de datos";
-                                                    echo '<div class="msj error">'.$msjBD.'</div>';
-                                                } else {
+                                                if($conexion == '1')
+                                                    echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
+                                                else{
                                                     
                                                     echo "<tr><td align=center>" . $cedula . "</td>";
                                                     echo "<td align=center>" . $nombres . "</td>";
                                                     echo "<td align=center>" . $apellidos . "</td>";
                                                     echo "<td align=center>" . $direccion . "</td>";
                                                     echo "<td align=center>" . $telefono . "</td>";
-                                                    if(isset($foto))
+                                                    if(!empty($foto))
                                                         echo "<td><img src='$foto' width=50 height=80 alt='Imagen no encontrada' /></td>";
                                                     else
                                                         echo "<td></td>";
@@ -697,18 +721,18 @@
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                 if($conexion == '1')
-                                                    echo "Hubo un error al conectarnos a la base de datos";
+                                                    echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                                 $asignado = tienePaqueteAsignado($conexion, $cedula);
 
                                                 if($asignado)
-                                                    echo "El transportista tiene un paquete asignado, debe desasignarse o entregarlo para poder modificar o eliminar sus datos";
+                                                    echo "<div class='msj error'>El transportista tiene un paquete asignado, debe desasignarse o entregarlo para poder modificar o eliminar sus datos</div>";
                                                 else {
                                                     
                                                     if(isset($_GET["d"])){
 
                                                         $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                         if($conexion == '1')
-                                                            echo "Hubo un error al conectarnos a la base de datos";
+                                                            echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                                         eliminarTransportista($conexion, $cedulaTransportista);
 
@@ -722,13 +746,13 @@
                                                         $foto = $arrayLista[$numTransportista]["foto"];
 
 
-                                                        echo "<form method=POST name=modificar>";
-                                                        echo "Cedula: <input type=text name=cedula placeholder='Ingresar cedula del transportista' value=$cedula required><br>";
-                                                        echo "Nombres: <input type=text name=nombres placeholder='Ingrese nombres del transportista' value=$nombres required><br>";
-                                                        echo "Apellidos: <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' value=$apellidos required><br>";
-                                                        echo "Direccion: <input type=text name=direccion placeholder='Ingresar direccion del transportista' value=$direccion required><br>";
-                                                        echo "Telefono: <input type=text name=telefono placeholder='Ingrese telefono del transportista' value=$telefono required><br>";
-                                                        echo "Foto: <input type='file' name='foto' src='$foto' width='70' height='100' alt='Imagen no encontrada' required><br>";
+                                                        echo "<form method=POST name=modificar enctype='multipart/form-data'>";
+                                                        echo "<span>Cedula:</span> <input type=text name=cedula placeholder='Ingresar cedula del transportista' value=$cedula required><br>";
+                                                        echo "<span>Nombres:</span> <input type=text name=nombres placeholder='Ingrese nombres del transportista' value=$nombres required><br>";
+                                                        echo "<span>Apellidos:</span> <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' value=$apellidos required><br>";
+                                                        echo "<span>Direccion:</span> <input type=text name=direccion placeholder='Ingresar direccion del transportista' value=$direccion required><br>";
+                                                        echo "<span>Telefono:</span> <input type=text name=telefono placeholder='Ingrese telefono del transportista' value=$telefono required><br>";
+                                                        echo "<span>Foto:</span> <input type='file' name='foto' src='$foto' width='70' height='100' alt='Imagen no encontrada' required><br>";
                                                                   
                                                         echo "<input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>";
                                                         echo "</form>";
@@ -764,30 +788,30 @@
                                                                             $tamanio = count($extension) - 1;
                                                                             if($extension[$tamanio] == $extensionTipo[$i]){
 
-                                                                                $move = $ruta."//".$nombre;
+                                                                                $move = $ruta."/".$cedulaModificada;
                                                                                 
                                                                                 if(move_uploaded_file($tmp_name, $move))
                                                                                     $subio = true;
                                                                         
-                                                                            }   
+                                                                            }
                                                                         }
                                                                         if (!$subio)
-                                                                            echo "El tipo de archivo no es compatible";
+                                                                            echo "<div class='msj error'>El tipo de archivo no es compatible</div>";
                                                                         else 
-                                                                            $foto = "C://wamp//www//Obligatorio//Fotos//Transportista//$nombre";
+                                                                            $foto = 'Fotos/Transportista/' . $cedulaModificada;
                                                         
                                                                     }
                                                                 }
 
                                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                                 if($conexion == '1')
-                                                                    echo "Hubo un error al conectarnos a la base de datos";
+                                                                    echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
         
-                                                                modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, ""); //Agregar foto
+                                                                modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto); 
                                                     
                                                             } else {
                                                     
-                                                                echo "No se encontraron datos.";
+                                                                echo "<div class='msj error'>No se encontraron datos.</div>";
                                                             }
                                                         }
                                                     }
@@ -799,13 +823,13 @@
                                     if(isset($_GET["a"])){
 
                                         echo "<form method=POST name=agregar enctype='multipart/form-data'>";
-                                        echo "Cedula: <input type=text name=cedula placeholder='Ingresar cedula del transportista' required><br>";
-                                        echo "Nombres: <input type=text name=nombres placeholder='Ingrese nombres del transportista' required><br>";
-                                        echo "Apellidos: <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' required><br>";
-                                        echo "Direccion: <input type=text name=direccion placeholder='Ingresar direccion del transportista' required><br>";
-                                        echo "Telefono: <input type=text name=telefono placeholder='Ingrese telefono del transportista' required><br>";
-                                        echo "PIN: <input type=text name=pin placeholder='Ingrese PIN para iniciar su sesion' required><br>";
-                                        echo "Foto: <input type='file' name='foto' required><br>";
+                                        echo "<span>Cedula:</span> <input type=text name=cedula placeholder='Ingresar cedula del transportista' required><br>";
+                                        echo "<span>Nombres:</span> <input type=text name=nombres placeholder='Ingrese nombres del transportista' required><br>";
+                                        echo "<span>Apellidos:</span> <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' required><br>";
+                                        echo "<span>Direccion:</span> <input type=text name=direccion placeholder='Ingresar direccion del transportista' required><br>";
+                                        echo "<span>Telefono:</span> <input type=text name=telefono placeholder='Ingrese telefono del transportista' required><br>";
+                                        echo "<span>PIN:</span> <input type=text name=pin placeholder='Ingrese PIN para iniciar su sesion' required><br>";
+                                        echo "<span>Foto:</span> <input type='file' name='foto' required><br>";
                                                     
                                         echo "<input type=submit name=agregar id=agregar value='Agregar Transportista'><br>";
                                         echo "</form>";
@@ -842,7 +866,7 @@
                                                             $tamanio = count($extension) - 1;
                                                             if($extension[$tamanio] == $extensionTipo[$i]){
                                                                 
-                                                                $move = $ruta."/".$nombre;
+                                                                $move = $ruta."/".$cedulaTransportista;
                                                                                 
                                                                 if(move_uploaded_file($tmp_name, $move))
                                                                     $subio = true;
@@ -850,22 +874,22 @@
                                                             }   
                                                         }
                                                         if (!$subio)
-                                                            echo "El tipo de archivo no es compatible";
+                                                            echo "<div class='msj error'>El tipo de archivo no es compatible</div>";
                                                         else 
-                                                            $foto = 'Fotos/Transportista/' . $nombre;
+                                                            $foto = 'Fotos/Transportista/' . $cedulaTransportista;
                                         
                                                     }
                                                 }
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                                 if($conexion == '1')
-                                                    echo "Hubo un error al conectarnos a la base de datos";
+                                                    echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
                                                 agregarTransportista($conexion, $cedulaTransportista, $nombres, $apellidos, $direccion, $telefono, $foto, $pin);
                                     
                                             } else {
                                     
-                                                echo "No se encontraron datos.";
+                                                echo "<div class='msj error'>No se encontraron datos.</div>";
                                             }
                                         }
                                     }
@@ -873,7 +897,7 @@
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
+                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
                                     
                                     $arrayHistorial = historialPaquetes($conexion);
         
@@ -884,7 +908,7 @@
     
                                             if($cant_filas0 > 0){
     
-                                                echo "<table border=1><tr>";
+                                                echo "<table><tr>";
                                                 echo "<tr><th align=center>Codigo</th>";
                                                 echo "<th align=center>Fecha de entrega / Fecha estimada de entrega</th>";
                                                 echo "<th align=center>Estado</th>";
@@ -927,7 +951,7 @@
 
                                                 if(!isset($cant_filas0)){
                                             
-                                                    echo "<table border=1><tr>";
+                                                    echo "<table><tr>";
                                                     echo "<tr><th align=center>Codigo</th>";
                                                     echo "<th align=center>Fecha de entrega / Fecha estimada de entrega</th>";
                                                     echo "<th align=center>Estado</th>";
@@ -967,7 +991,7 @@
                                                 
                                                 if(!isset($cant_filas0) && !isset($cant_filas2)){
                                             
-                                                    echo "<table border=1><tr>";
+                                                    echo "<table><tr>";
                                                     echo "<tr><th align=center>Codigo</th>";
                                                     echo "<th align=center>Fecha de entrega / Fecha estimada de entrega</th>";
                                                     echo "<th align=center>Estado</th>";
@@ -1003,14 +1027,14 @@
                                             }
                                         }
                                     } else 
-                                        echo "No hay paquetes entregados o por entregar";
+                                        echo "<div class='msj error'>No hay paquetes entregados o por entregar</div>";
                                 } 
                             }   
                         }
                         ?>
 
                     </div>
-                    <div class="col-md-4"></div>
+                   
                 </div>
             </div>
             

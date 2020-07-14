@@ -378,21 +378,21 @@ article ul{
 	text-decoration : none;
 	cursor          : pointer;
 	border-radius   : 0;
-	padding         : 0 0 0 45px;
+	padding         : 10px 30px;
 	background-color: transparent;
-	color           : var(--color-1);
+	color           : red;
 	font-size       : 1rem;
-	border          : none;
+	border          : 1px solid red !important;
 	transition      : all .2s ease !important;
 	font-weight     : 600;
-	border          : none !important;
 	display         : inline-flex;
 	align-items     : center;
 	justify-content : center;
+	margin:30px 0;
 }
 	.btn:before{
 		content        : '+';
-		color          : var(--color-1);
+		color          : red;
 		width          : 35px;
 		height         : 35px;
 		position       : absolute;
@@ -400,17 +400,14 @@ article ul{
 		display        : flex;
 		align-items    : center;
 		justify-content: center;
-		border-radius  : 50%;
-		border         : 2px solid var(--color-1);
 		transition     : all .4s ease
 	}
 
 	.btn:hover{
-		background: transparent;
-		color     : var(--color-1)
+		background: red;
+		color     : #fff
 	}
 	.btn:hover:before{
-		background-color: var(--color-1);
 		color           : #fff
 	}
 
@@ -539,6 +536,11 @@ article ul{
 
 
 /* #FORM's */
+.col-md-12 form{
+	margin: 30px auto;
+	max-width: 60%;
+	float: none;
+}
 
 /* fix ios */
 select,
@@ -568,7 +570,8 @@ select{
 	background: #eee;
 	border:1px solid #ccc;
 	font-size: .9rem;
-	padding: 5px
+	padding: 5px;
+	margin-bottom: 10px
 }
 
 /* textarea */
@@ -651,6 +654,15 @@ select{
 	}
 
 	.verif{display:none;}
+
+
+	form span{
+		width: 100%;
+		float: left;
+		font-size: .8rem;
+		font-weight: 600;
+		text-align: left;
+	}
 
 	/*
 	form input:focus:invalid,
@@ -779,6 +791,9 @@ select{
 .ok{
 	color: #4d9b08
 }
+.alerta{
+	color: #b78600;
+}
 
 /* modal */
 .modal.show .modal-dialog{
@@ -820,53 +835,33 @@ select{
 .msj{
 	width          : 100%;
 	float          : left;
-	padding        : 15px;
+	padding        : 10px;
 	display        : flex;
 	align-items    : center;
 	margin         : 10px 0;
 	justify-content: center;
 }
-	.msj:before{
-		content            : '';
-		background-size    : contain;
-		background-position: center;
-		background-repeat  : no-repeat;
-		width              : 28px;
-		height             : 28px;
-		float              : left;
-		margin-right       : 20px;
-		float: left
-	}
+
 
 	/* ok */
 	.msj.ok{
 		background-color: #eaffdb;
 		border          : 2px solid #4d9b08;
 	}
-		
-		.msj.ok:before{
-			background-image: url(../_img/ico-ok.svg);
-		}
+
 
 
 	/* alerta */
-	.msj.pendiente{
-		background-color: #fff9d3;
-		border          : 2px solid #edda50;
+	.msj.alerta{
+		background-color: #fdffa5;
+		border          : 2px solid #e2d64d;
 	}
-		.msj.pendiente:before{
-			background-image: url(../_img/ico-alerta.svg);
-		}
 
-	
 	/* error */
 	.msj.error{
 		background-color: #ffdbdb;
 		border          : 2px solid #c90000;
 	}
-		.msj.error:before{
-			background-image: url(../_img/ico-error.svg);
-		}
 
 
 	.msj strong{
@@ -892,7 +887,7 @@ select{
 
 /* comun */
 table {
-	border         : 1px solid #202020;
+	border         : none !important;
 	border-collapse: collapse;
 	margin         : 0;
 	padding        : 0;
@@ -905,8 +900,12 @@ table {
 	}
 	table tr {
 		background: #fff;
-		border    : 1px solid #202020;
+		border    : none !important;
 		padding   : 0;
+	}
+
+	table tr:nth-child(odd){
+		background: #eee
 	}
 
 
@@ -915,13 +914,29 @@ table {
 	table td {
 		padding   : .5em;
 		text-align: center;
-		color     : #202020;
+		color     : #333;
 		border    : 1px solid #ccc;
 		font-size: .9rem
 	}
 	table th {
 	  text-transform: uppercase;
-	  font-weight: bold
+	  font-weight: bold;
+	  background: #333;
+	  color: #fff
+	}
+
+
+	td a{
+		border:1px solid red;
+		color: red;
+		padding: 4px 8px;
+		text-align: center
+	}
+
+	td a:hover{
+		background: red;
+		color: #fff;
+		text-decoration: none !important;
 	}
 
 
