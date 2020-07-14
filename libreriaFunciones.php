@@ -1,18 +1,21 @@
 <?php
 
 
-
+    // CONEXION SQL
     function conectarSQL($ip = "localhost", $user = "root", $pass = ""){
 
         return mysqli_connect($ip, $user, $pass);
     }
 
+
+    // CONEXION BD
     function conectarBD($conexion, $bd){
 
         return mysqli_select_db($conexion, $bd);
 
     }
 
+    // CREAR CONEXION
     function crearConexion($ip, $user, $pass, $bd){
 
         $conexion = mysqli_connect($ip, $user, $pass, $bd);
@@ -22,14 +25,15 @@
             return 1;
     }
 
+    //CERRAR CONEXION
     function cerrarConexion($conexion){
 
         mysqli_close($conexion);
     }
 
 
-
-    function ingreso($CI, $PIN, $conexion, $tipo){
+    // INGRESO
+    function ingreso($CI, $PIN, $conexion, $tipo, &$msjIngreso){
         
         if($tipo == "en"){
 
@@ -53,15 +57,16 @@
                     $_SESSION["tipo"] = "en";
 
                     cerrarConexion($conexion);
-                    header("Location: inicio.php?m=1");
+                    echo '<div class="msj ok">Iniciando sesion...</div>';
+                    echo "<meta http-equiv='refresh' content='0.7;url=inicio.php?m=1'>";
                     die();
                 } else {
 
-                    echo "Cedula y PIN no coinciden, pruebe nuevamente.";
+                    $msjIngreso = "Cedula y PIN no coinciden, pruebe nuevamente.";
                 }
             } else {
 
-                echo "Cedula y PIN no coinciden, pruebe nuevamente.";
+                $msjIngreso = "No se encontro el encargado en el sistema.";
             }
 
         } else if($tipo == "tr"){
@@ -89,15 +94,18 @@
                     $_SESSION["tipo"] = "tr";
 
                     cerrarConexion($conexion);
-                    header("Location: inicio.php?m=1");
+                    echo '<div class="msj ok">Iniciando sesion...</div>';
+                    echo "<meta http-equiv='refresh' content='0.7;url=inicio.php?m=1'>";
                     die();
                 } else {
 
-                    echo "Cedula y PIN no coinciden, pruebe nuevamente.";
+                    $msjIngreso = "Cedula y PIN no coinciden, pruebe nuevamente.";
+                    echo '<div class="msj error">'.$msjIngreso.'</div>';
                 } 
             } else {
 
-                echo "Cedula y PIN no coinciden, pruebe nuevamente.";
+                $msjIngreso = "No se encontro el transportista en el sistema.";
+                echo '<div class="msj error">'.$msjIngreso.'</div>';
             }
 
         } else if($tipo == "vs"){
@@ -105,18 +113,21 @@
             session_start();
             $_SESSION["tipo"] = "vs";
             cerrarConexion($conexion);
-            header("Location: inicio.php");
+            echo '<div class="msj ok">Iniciando sesion...</div>';
+            echo "<meta http-equiv='refresh' content='0.7;url=inicio.php'>";
             die();
         } else {
 
-            echo "Mostrar mensaje de error";
+            $msjIngreso = "No es un tipo valido";
         }
         cerrarConexion($conexion);
     }
 
+
+    // CERRAR SESION
     function cerrarSesion(){
 
-        echo "<br>Cerrando sesion...<br>";
+        echo '<div class="msj ok">Cerrando sesion...</div>';
         session_unset();
         session_destroy();
         echo "<meta http-equiv='refresh' content='1;url=index.php'>";
@@ -124,7 +135,8 @@
 
     }
 
-    function buscarPaquete($codigo, $conexion) {
+    // BUSCAR PAQUETE
+    function buscarPaquete($codigo, $conexion, &$msjPaquete) {
 
         $consulta = mysqli_query($conexion, "SELECT estado, fechaEstimada, fechaEntrega FROM paquete WHERE codigo = '$codigo' AND eliminado = '0'");
 
@@ -135,7 +147,8 @@
             //Mira que el estado del paquete no este vacio, si esta se informa que no se encontro
             if(empty($filaAsociativa["estado"])){
                 
-                echo "No se encontro el paquete";
+                $msjPaquete = "No se encontro el paquete";
+
             //Buscamos la fecha estimada, si esta entonces mandamos la fecha estimada del paquete
             } else if (!empty($filaAsociativa["fechaEstimada"])){
                 
@@ -168,13 +181,14 @@
             
         } else {
 
-            echo "Ocurrio un error en la consulta.";
+            $msjPaquete = "Ocurrio un error en la consulta.";
         }
         cerrarConexion($conexion);
 
     }
 
-    function paquetesNoAsignados($conexion) {
+    // PAQUETES NO ASIGNADOS
+    function paquetesNoAsignados($conexion, &$msjPaqueteNo) {
 
         $consulta = mysqli_query($conexion, "SELECT codigo, dirRemitente, dirEnvio, fragil, perecedero FROM paquete WHERE estado = 'No asignado' AND eliminado = '0'");
 
@@ -182,9 +196,11 @@
         
             $cant_filas = mysqli_num_rows($consulta);
 
-            if($cant_filas == 0)
-                echo "No hay paquetes sin asignar";
-            else{
+            if($cant_filas == 0){
+
+                $msjPaqueteNo = "No hay paquetes sin asignar";
+
+            } else {
 
                 $array = array();
 
@@ -221,13 +237,13 @@
     
         } else {
 
-            echo "Error en la consulta de paquetes";
+            $msjPaqueteNo = "Error en la consulta de paquetes";
         }
         cerrarConexion($conexion);
 
     }
 
-    //Ver metodo desde aca
+    // Ver metodo desde aca
     function asignarPaquete($conexion, $ciTransportista){
 
         $consulta = mysqli_query($conexion, "SELECT codigo, fechaAsignacion, ciTransportista FROM paquete WHERE estado = 'Asignado' AND eliminado = '0'");
@@ -250,7 +266,8 @@
                         $timestamp = strtotime($fechaBD);
                         $fechaAsignacion = date("d/m/Y", $timestamp);
 
-                        echo "<br> Ya tiene un paquete asignado, el codigo del paquete es: $codigo, y le fue asignado el dia: $fechaAsignacion.";
+                        $msjAsignado = "<br> Ya tiene un paquete asignado, el codigo del paquete es: $codigo, y le fue asignado el dia: $fechaAsignacion.";
+                        echo '<div class="msj error">'.$msjAsignado.'</div>';
 
                     } else {
 
@@ -275,7 +292,8 @@
 
         } else {
 
-            echo "<br> Error en la consulta de paquetes";
+            $msjConsulta = "<br> Ocurrio un error en la consulta";
+            echo '<div class="msj error">'.$msjConsulta.'</div>';
         }
         cerrarConexion($conexion);
 
@@ -294,7 +312,8 @@
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
-            echo "Ocurrio un error en la consulta";
+            $msjConsulta = "<br> Ocurrio un error en la consulta";
+            echo '<div class="msj error">'.$msjConsulta.'</div>';
         }
         cerrarConexion($conexion);
 

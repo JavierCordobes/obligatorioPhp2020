@@ -45,58 +45,60 @@
         <main id="main" role="main">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
  
                         <?php
                         include_once('libreriaFunciones.php');
 
                         if($tipo == "vs"){
 
-                            echo "<form method=POST name=estadoPaquete>";
-
-                            echo "<input name=codigo type=text placeholder=Codigo>";
-
-                            echo "<input type=submit name=buscarPaquete id=buscarPaquete value=buscarPaquete>";
-
-                            echo "</form>";
+                            echo '
+                            <form method=POST name="estadoPaquete">
+                                <input name="codigo" type="text" placeholder="Codigo" required>
+                                <input type="submit" name="buscarPaquete" id="buscarPaquete" value="Buscar Paquete">
+                            </form>';
 
                             if(array_key_exists("buscarPaquete", $_POST)){
 
                                 if(empty($_POST)) {
             
-                                    echo "No se pudo enviar o no se encontro el paquete";
+                                    echo '<div class="msj error">No se pudo enviar o no se encontro el paquete</div>';
 
                                 } else {
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
-                                    if($conexion == '1')
-                                        echo "Hubo un error al conectarnos a la base de datos";
-
-                                    $codigoBusqueda = $_POST["codigo"];
+                                    if($conexion == '1'){
+                                        echo '<div class="msj error">Hubo un error al conectarnos a la base de datos</div>';
+                                    } else {
+                                        
+                                        $codigoBusqueda = $_POST["codigo"];
                     
-                                    $arrayPaquete = buscarPaquete($codigoBusqueda, $conexion);
-
-                                    if(!empty($arrayPaquete)){
-
-                                        $estadoPaquete = $arrayPaquete["estado"];
-
-                                        echo "Estado del paquete: $estadoPaquete. ";
-
-                                        if(!empty($arrayPaquete["fechaPaquete"])){
-
-                                            $fechaArray = $arrayPaquete["fechaPaquete"];
-                                            $timestamp = strtotime($fechaArray);
-                                            $fechaPaquete = date("d/m/Y", $timestamp);
-
-                                            if($estadoPaquete == "Asignado")
-                                                echo "Fecha estimada de entrega: $fechaPaquete";
-                                            else
-                                                echo "Fecha de entrega: $fechaPaquete";
-                                        }
-                                    }
+                                        $msjPaquete = '';
+                                        $arrayPaquete = buscarPaquete($codigoBusqueda, $conexion, $msjPaquete);
+    
+                                        if(!empty($arrayPaquete)){
+    
+                                            $estadoPaquete = $arrayPaquete["estado"];
+    
+                                            echo "Estado del paquete: $estadoPaquete. <br>";
+    
+                                            if(!empty($arrayPaquete["fechaPaquete"])){
+    
+                                                $fechaArray = $arrayPaquete["fechaPaquete"];
+                                                $timestamp = strtotime($fechaArray);
+                                                $fechaPaquete = date("d/m/Y", $timestamp);
+    
+                                                if($estadoPaquete == "Asignado")
+                                                    echo "Fecha estimada de entrega: $fechaPaquete";
+                                                else
+                                                    echo "Fecha de entrega: $fechaPaquete";
+                                            }
+                                        } else 
+                                            echo '<div class="msj error">'.$msjPaquete.'</div>';
+                                    }    
                                 }
                             }
-
                         } else if ($tipo == "tr"){
 
                             if(!empty($_GET["m"])){
@@ -195,7 +197,8 @@
                                     if($conexion == '1')
                                         echo "Hubo un error al conectarnos a la base de datos";
                                     
-                                    $arrayPaquetesNoAsignados = paquetesNoAsignados($conexion);
+                                    $msjPaqueteNo = "";
+                                    $arrayPaquetesNoAsignados = paquetesNoAsignados($conexion, $msjPaqueteNo);
 
                                     $cant_filas = count($arrayPaquetesNoAsignados);
 
@@ -237,6 +240,9 @@
 
                                         echo "</table>";
 
+                                    } else {
+
+                                        echo '<div class="msj error">'.$msjPaqueteNo.'</div>';
                                     }
 
                                     if(isset($_GET["n"])){
@@ -597,8 +603,8 @@
                                         echo "Codigo: <input type=text name=codigo placeholder='Ingrese el codigo del paquete' required><br>";
                                         echo "Dir. Remitente: <input type=text name=dirRemitente placeholder='Ingrese Dir. de Remitente' required><br>";
                                         echo "Dir. Envio: <input type=text name=dirEnvio placeholder=Ingrese 'Ingrese Dir. de Envio' required><br>";
-                                        echo "Fragil: <input type=radio name=fragil value=1 checked required>Si " . "<input type=radio name=fragil value=0>No<br>";
-                                        echo "Perecedero: <input type=radio name=perecedero value=1 checked required>Si " . "<input type=radio name=perecedero value=0>No<br>";                                        
+                                        echo "Fragil: <input type='radio' name='fragil' class='radio' value='1' checked required>Si " . "<input type='radio' name='fragil' class='radio' value='0'>No<br>";
+                                        echo "Perecedero: <input type='radio' name='perecedero' class='radio' value='1' checked required>Si " . "<input type='radio' name='perecedero' class='radio' value='0'>No<br>";                                        
                                         echo "<input type=submit name=agregar id=agregar value='Agregar paquete'>";
                                         echo "</form>";
 
@@ -661,16 +667,17 @@
                                                 $foto = $arrayLista[$i]["foto"];
 
                                                 $conexion = crearConexion("localhost", "root", "", "obligatorio");
-                                                if($conexion == '1')
-                                                    echo "Hubo un error al conectarnos a la base de datos";
-                                                else{
+                                                if($conexion == '1'){
+                                                    $msjBD = "Hubo un error al conectarnos a la base de datos";
+                                                    echo '<div class="msj error">'.$msjBD.'</div>';
+                                                } else {
                                                     
                                                     echo "<tr><td align=center>" . $cedula . "</td>";
                                                     echo "<td align=center>" . $nombres . "</td>";
                                                     echo "<td align=center>" . $apellidos . "</td>";
                                                     echo "<td align=center>" . $direccion . "</td>";
                                                     echo "<td align=center>" . $telefono . "</td>";
-                                                    if(!empty($foto))
+                                                    if(isset($foto))
                                                         echo "<td><img src='$foto' width=50 height=80 alt='Imagen no encontrada' /></td>";
                                                     else
                                                         echo "<td></td>";
@@ -1003,6 +1010,7 @@
                         ?>
 
                     </div>
+                    <div class="col-md-4"></div>
                 </div>
             </div>
             

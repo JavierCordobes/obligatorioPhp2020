@@ -1,6 +1,3 @@
-<?php 
-require('conexion.php');
-?>
 <!DOCTYPE html>
 <html lang="es-ES">
 
@@ -35,8 +32,7 @@ require('conexion.php');
     <link rel ="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon-180x180.png" />
     <!-- css -->
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="css/estilos.css" rel="stylesheet" type="text/css"/>
-    <link href="css/movil.css" rel="stylesheet" type="text/css"/>
+    <link href="css/estilos.css?<?php echo time(); ?>" rel="stylesheet" type="text/css"/>
     <!-- js -->
     <script src       ="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src       ="js/jquery-migrate-1.4.1.min.js" type="text/javascript"></script>
