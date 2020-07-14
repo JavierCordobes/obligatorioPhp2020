@@ -188,9 +188,7 @@
     }
 
     // PAQUETES NO ASIGNADOS
-    function paquetesNoAsignados($conexion) {
-
-        $msjPaqueteNo = '';
+    function paquetesNoAsignados($conexion, &$msjPaqueteNo) {
 
         $consulta = mysqli_query($conexion, "SELECT codigo, dirRemitente, dirEnvio, fragil, perecedero FROM paquete WHERE estado = 'No asignado' AND eliminado = '0'");
 
@@ -268,7 +266,8 @@
                         $timestamp = strtotime($fechaBD);
                         $fechaAsignacion = date("d/m/Y", $timestamp);
 
-                        echo "<br> Ya tiene un paquete asignado, el codigo del paquete es: $codigo, y le fue asignado el dia: $fechaAsignacion.";
+                        $msjAsignado = "<br> Ya tiene un paquete asignado, el codigo del paquete es: $codigo, y le fue asignado el dia: $fechaAsignacion.";
+                        echo '<div class="msj error">'.$msjAsignado.'</div>';
 
                     } else {
 
@@ -293,7 +292,8 @@
 
         } else {
 
-            echo "<br> Error en la consulta de paquetes";
+            $msjConsulta = "<br> Ocurrio un error en la consulta";
+            echo '<div class="msj error">'.$msjConsulta.'</div>';
         }
         cerrarConexion($conexion);
 
@@ -312,7 +312,8 @@
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
-            echo "Ocurrio un error en la consulta";
+            $msjConsulta = "<br> Ocurrio un error en la consulta";
+            echo '<div class="msj error">'.$msjConsulta.'</div>';
         }
         cerrarConexion($conexion);
 
@@ -664,7 +665,7 @@
 
             } else {
                 
-                echo "<div class='msj alerta'>No hay paquetes en el sistema</div>";
+                echo "No hay paquetes en el sistema <br>";
             }
 
         } else {
@@ -698,11 +699,11 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj ok'>El paquete se actualizo exitosamente, regresando al inicio...</div>";
+            echo "El paquete se actualizo exitosamente, regresando al inicio...";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
-            echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
+            echo "Ocurrio un error en la consulta";
         }
         cerrarConexion($conexion);
     }
@@ -718,7 +719,7 @@
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
-            echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
+            echo "Ocurrio un error en la consulta";
         }
         cerrarConexion($conexion);
     }
@@ -759,12 +760,12 @@
 
             } else {
                 
-                echo "<div class='msj alerta'>No hay transportistas en el sistema </div>";
+                echo "No hay transportistas en el sistema <br>";
             }
 
         } else {
 
-            echo "<div class='msj error'>Error en la consulta de transportista</div>";
+            echo "Error en la consulta de transportista";
         }
         cerrarConexion($conexion);
 
@@ -777,27 +778,27 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj ok'>El transportista se agrego exitosamente, regresando al inicio...</div>";
+            echo "El transportista se agrego exitosamente, regresando al inicio...";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
-            echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
+            echo "Ocurrio un error en la consulta";
         }
         cerrarConexion($conexion);
     }
 
     function modificarTransportista($conexion, $cedulaTransportista, $cedulaNueva, $nombres, $apellidos, $direccion, $telefono, $foto){
 
-        $consulta = mysqli_query($conexion, "UPDATE transportista SET cedula = '$cedulaNueva', nombres = '$nombres', apellidos = '$apellidos', direccion = '$direccion', telefono = '$telefono', foto = '$foto' WHERE cedula = '$cedulaTransportista' AND eliminado = '0'");
+        $consulta = mysqli_query($conexion, "UPDATE transportista SET cedula = '$cedulaNueva', nombres = '$nombres', apellidos = '$apellidos', direccion = '$direccion', telefono = '$telefono, foto = '$foto', pin = '$pin' WHERE cedula = '$cedulaTransportista' AND eliminado = '0'");
 
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj alerta'>El transportista se actualizo exitosamente, regresando al inicio...</div>";
+            echo "El transportista se actualizo exitosamente, regresando al inicio...";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
-            echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
+            echo "Ocurrio un error en la consulta";
         }
         cerrarConexion($conexion);
     }
@@ -809,11 +810,11 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj alerta'>El paquete se elimino exitosamente, regresando al inicio...</div>";
+            echo "El paquete se elimino exitosamente, regresando al inicio...";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
-            echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
+            echo "Ocurrio un error en la consulta";
         }
         cerrarConexion($conexion);
     }
