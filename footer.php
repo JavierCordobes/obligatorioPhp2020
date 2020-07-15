@@ -4,7 +4,7 @@
 			
 			
 			<div class="col-12">
-				<p>FOOTER</p>
+				<p></p>
 			</div>
 
 

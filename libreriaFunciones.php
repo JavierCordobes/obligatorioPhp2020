@@ -55,6 +55,7 @@
                     $_SESSION["nombre"] = $nomBD;
                     $_SESSION["apellido"] = $apeBD;
                     $_SESSION["tipo"] = "en";
+                    $_SESSION["tiempo"] = time();
 
                     cerrarConexion($conexion);
                     echo '<div class="msj ok">Iniciando sesion...</div>';
@@ -83,7 +84,6 @@
                 $nomBD = $filaAsociativa["nombres"];
                 $apeBD = $filaAsociativa["apellidos"];
 
-
                 if($PIN == $pinBD){
 
                     //ingreso de datos a session
@@ -92,6 +92,7 @@
                     $_SESSION["nombre"] = $nomBD;
                     $_SESSION["apellido"] = $apeBD;
                     $_SESSION["tipo"] = "tr";
+                    $_SESSION["tiempo"] = time();
 
                     cerrarConexion($conexion);
                     echo '<div class="msj ok">Iniciando sesion...</div>';
@@ -267,7 +268,7 @@
                         $timestamp = strtotime($fechaBD);
                         $fechaAsignacion = date("d/m/Y", $timestamp);
 
-                        $msjAsignado = "<br> Ya tiene un paquete asignado, el codigo del paquete es: $codigo, y le fue asignado el dia: $fechaAsignacion.";
+                        $msjAsignado = "Ya tiene un paquete asignado, el codigo del paquete es: $codigo, y le fue asignado el dia: $fechaAsignacion.";
                         echo '<div class="msj error">'.$msjAsignado.'</div>';
 
                     } else {
@@ -340,9 +341,9 @@
             if($cant_filas == 0){
 
                 if($ciTransportista == 'n')
-                    echo "No hay paquetes asignados";
+                    echo "<div class='msj alerta'>No hay paquetes asignados</div>";
                 else
-                    echo "No tiene paquetes asignados";
+                    echo "<div class='msj alerta'>No tiene paquetes asignados</div>";
                 
             } else {
 
@@ -405,7 +406,7 @@
                 }
         } else {
 
-            echo "Error en la consulta de paquetes";
+            echo "<div class='msj error'>Error en la consulta de paquetes</div>";
         }
         cerrarConexion($conexion);
 
@@ -811,7 +812,7 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj alerta'>El paquete se elimino exitosamente, regresando al inicio...</div>";
+            echo "<div class='msj alerta'>El transportista se elimino exitosamente, regresando al inicio...</div>";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {

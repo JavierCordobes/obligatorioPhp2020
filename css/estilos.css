@@ -196,6 +196,7 @@ body{
 #cont{
 	width     : 100%;
 	min-height: 100%;
+	padding-bottom: 100px;
 	overflow  : hidden;
 }	
 	
@@ -491,11 +492,12 @@ article ul{
 
 /* footer */
 #footer{
-	position        : absolute;
-	bottom          : 0;
-	left            : 0;
-	background-color: #fff;
-	padding         : 40px 0
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background-color: #eee;
+	padding         : 20px 0;
+	margin-top: 40px
 }
 
 	/* tx */
@@ -538,7 +540,7 @@ article ul{
 /* #FORM's */
 .col-md-12 form{
 	margin: 30px auto;
-	max-width: 60%;
+	max-width: 45%;
 	float: none;
 }
 
@@ -615,10 +617,15 @@ select{
 		width            : auto;
 		margin-right     : 35px;
 		background-repeat: no-repeat;
-		padding-left     : 22px;
+		padding     : 0 0 0 22px !important;
 		background-size  : 16px;
 		cursor           : pointer;
-		margin           : 5px 0 10px 0;
+		margin           : 5px 30px 10px 0;
+		background-color: transparent !important;
+		border: none !important;
+		display: flex;
+		align-items: center;
+		background-position: 0
 	}
 	label.check{
 		background-image:url(../img/checkbox.png);
@@ -664,26 +671,6 @@ select{
 		text-align: left;
 	}
 
-	/*
-	form input:focus:invalid,
-	form textarea:focus:invalid{
-		border:1px solid #eee;
-	}
-
-	.required input:focus:valid,
-	.required input:valid,
-	.required textarea:focus:valid,
-	.required textarea:valid{
-		border    :1px solid #eee;
-		background:#E7F3DD
-	}
-
-	/* autocompletar
-	input:-webkit-autofill {
-		-webkit-box-shadow     : 0 0 0px 1000px #eeeeee inset;
-		-webkit-text-fill-color: #19181D;
-	}
-	*/
 
 	input:-webkit-autofill,
 	input:-webkit-autofill:hover, 
@@ -939,6 +926,10 @@ table {
 		text-decoration: none !important;
 	}
 
+
+	table tr img{
+		max-width: 65px
+	}
 
 
 
