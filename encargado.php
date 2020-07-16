@@ -436,17 +436,17 @@ if(!empty($_GET["m"])){
                             $foto = $arrayLista[$numTransportista]["foto"];
                             
                             echo "
-                            <form method=POST name=modificar enctype='multipart/form-data'>
+                            <form method='POST' name='modificar' enctype='multipart/form-data'>
                             <span>Cedula:</span> 
-                            <input type=text name=cedula placeholder='Ingresar cedula del transportista' value=$cedula maxlength=15 required><br>
+                            <input type=text name=cedula placeholder='Ingresar cedula del transportista' value='$cedula' maxlength=15 required><br>
                             <span>Nombres:</span> 
-                            <input type=text name=nombres placeholder='Ingrese nombres del transportista' value=$nombres maxlength=45 required><br>
+                            <input type=text name=nombres placeholder='Ingrese nombres del transportista' value='$nombres' maxlength=45 required><br>
                             <span>Apellidos:</span> 
-                            <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' value=$apellidos maxlength=45 required><br>
+                            <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' value='$apellidos' maxlength=45 required><br>
                             <span>Direccion:</span> 
-                            <input type=text name=direccion placeholder='Ingresar direccion del transportista' value=$direccion maxlength=45 required><br>
+                            <input type=text name=direccion placeholder='Ingresar direccion del transportista' value='$direccion' maxlength=45 required><br>
                             <span>Telefono:</span> 
-                            <input type=text name=telefono placeholder='Ingrese telefono del transportista' value=$telefono maxlength=45 required><br>
+                            <input type=text name=telefono placeholder='Ingrese telefono del transportista' value='$telefono' maxlength=45 required><br>
 
 
                             <!-- modificar imagen -->
@@ -460,7 +460,7 @@ if(!empty($_GET["m"])){
 
                             <section id='mostrar-file'>
                                 <span>Foto:</span> 
-                                <input type='file' name='foto' width='70' height='100' alt='Imagen no encontrada'><br>
+                                <input type='file' name='foto'><br>
                             </section>
                                       
                             
@@ -522,6 +522,7 @@ if(!empty($_GET["m"])){
                                         }
                                     } else 
                                         $foto = "";
+                                    
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
@@ -529,13 +530,13 @@ if(!empty($_GET["m"])){
 
                                     if(!existeTransportista($conexion, $cedulaModificada)){
 
-                                        
-                                        modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto); 
+                                        $transportista->seteoDatos($cedulaModificada, $nombres, $apellidos, $foto, $direccion, $telefono);
+                                        $transportista->modificar($conexion, $cedulaTransportista);
                                     } else {
                                         if($cedulaModificada == $cedulaTransportista){
 
-
-                                            modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto);
+                                            $transportista->seteoDatos($cedulaModificada, $nombres, $apellidos, $foto, $direccion, $telefono);
+                                            $transportista->modificar($conexion, $cedulaTransportista);
                                         } else
                                             echo "<div class='msj error'>Ya existe un transportista con esa cedula</div>";
                                     }
@@ -626,8 +627,13 @@ if(!empty($_GET["m"])){
                     if($conexion == '1')
                         echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
-                    if(!existeTransportista($conexion, $cedulaTransportista))
-                        agregarTransportista($conexion, $cedulaTransportista, $nombres, $apellidos, $direccion, $telefono, $foto, $pin);
+                    if(!existeTransportista($conexion, $cedulaTransportista)){
+
+                        $transportista->seteoDatos($cedulaTransportista, $nombres, $apellidos, $foto, $direccion, $telefono);
+                        //El pin se pasa aparte porque en seteoDatos no se agrega para simplificar la modificacion
+                        $transportista->agregar($conexion, $pin);
+
+                    }
                     else
                         echo "<div class='msj error'>Ya existe un transportista con esa cedula</div>";
 

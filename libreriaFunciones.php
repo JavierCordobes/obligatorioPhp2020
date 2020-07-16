@@ -800,38 +800,6 @@
             return false;
     }
 
-    function agregarTransportista($conexion, $cedula, $nombres, $apellidos, $direccion, $telefono, $foto, $pin){
-
-        $consulta = mysqli_query($conexion, "INSERT INTO transportista(cedula, nombres, apellidos, direccion, telefono, foto, pin) VALUES ('$cedula', '$nombres', '$apellidos', '$direccion', '$telefono', '$foto', '$pin')");
-
-        if($consulta){
-
-            cerrarConexion($conexion);
-            echo "<div class='msj ok'>El transportista se agrego exitosamente</div>";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=3'>";
-            die();
-        } else {
-            echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
-        }
-        cerrarConexion($conexion);
-    }
-
-    function modificarTransportista($conexion, $cedulaTransportista, $cedulaNueva, $nombres, $apellidos, $direccion, $telefono, $foto){
-
-        $consulta = mysqli_query($conexion, "UPDATE transportista SET cedula = '$cedulaNueva', nombres = '$nombres', apellidos = '$apellidos', direccion = '$direccion', telefono = '$telefono', foto = '$foto' WHERE cedula = '$cedulaTransportista' AND eliminado = '0'");
-
-        if($consulta){
-
-            cerrarConexion($conexion);
-            echo "<div class='msj alerta'>El transportista se actualizo exitosamente</div>";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=3'>";
-            die();
-        } else {
-            echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
-        }
-        cerrarConexion($conexion);
-    }
-
     function eliminarTransportista($conexion, $cedulaTransportista){
 
         $consulta = mysqli_query($conexion, "UPDATE transportista SET eliminado = '1' WHERE cedula = '$cedulaTransportista' AND eliminado = '0'");
