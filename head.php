@@ -37,7 +37,7 @@
     <script src       ="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src       ="js/jquery-migrate-1.4.1.min.js" type="text/javascript"></script>
     <script src       ="js/bootstrap.min.js" type="text/javascript"></script>
-    <script defer src ="js/fbox/jquery.fancybox.min.js" type="text/javascript"></script>
+
 
 
     <!--[if lt IE 9]>

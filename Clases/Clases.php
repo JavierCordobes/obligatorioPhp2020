@@ -82,7 +82,7 @@ class Transportista extends Persona{
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj ok'>El transportista se agrego exitosamente, pin = $pinMD5</div>";
+            echo "<div class='msj ok'>El transportista se agrego exitosamente</div>";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=3'>";
             die();
         } else {

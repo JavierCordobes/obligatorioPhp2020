@@ -70,8 +70,9 @@ if(!empty($_GET["m"])){
                 echo "<td align=center>" . $ciTransportista . "</td>";
                 echo "<td align=center>" . $nombreCompleto . "</td>";
                 echo "<td align=center>" . $fechaAsignacion . "</td></tr><br>";
-                echo "</table>";
+                
             }
+            echo "</table>";
         }
 
 
@@ -412,7 +413,7 @@ if(!empty($_GET["m"])){
                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                     if($conexion == '1')
                         echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
-                    $asignado = tienePaqueteAsignado($conexion, $cedula);
+                    $asignado = tienePaqueteAsignado($conexion, $cedulaTransportista);
 
                     if($asignado)
                         echo "<div class='msj error'>El transportista tiene un paquete asignado, debe desasignarse o entregarlo para poder modificar o eliminar sus datos</div>";

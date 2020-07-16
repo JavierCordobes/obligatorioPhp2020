@@ -4,7 +4,7 @@
 			
 			
 			<div class="col-12">
-				<p></p>
+				<p>Creado por: <b>Javier Cordobés - Maximiliano López - Santiago Gonzalez</b></p>
 			</div>
 
 
