@@ -27,7 +27,7 @@ CREATE TABLE `transportista` (
   `nombres` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
   `apellidos` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
   `direccion` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
-  `telefono` varchar(6) COLLATE utf8_spanish_ci NOT NULL,
+  `telefono` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
   `foto` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
   `pin` varchar(6) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`cedula`)
