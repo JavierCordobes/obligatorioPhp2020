@@ -204,57 +204,45 @@ if(!empty($_GET["m"])){
                             <span>Dir. Envio:</span> 
                             <input type=text name=dirEnvio placeholder='Ingrese Dir. de Envio' value=$dirEnvio required><br>";
 
-                            if($fragil)
+                            if($fragil){
+                                echo "<span>Fragil:</span> 
+                                
+                                <input class='radio' id='fragil1-si' type=radio name=fragil value=1 checked required>
+                                <label class='radio' for='fragil1-si'>SI</label>
+                        
+                                <input class='radio' id='fragil1-no' type=radio name=fragil value=0>
+                                <label class='radio' for='fragil1-no'>NO</label>";
                             
-                            echo "
-                            <span>Fragil:</span> 
+                            } else {   
+                                echo "<span>Fragil:</span> 
                             
-                            <input class='radio' id='fragil1-si' type=radio name=fragil value=1 checked required>
-                            <label class='radio' for='fragil1-si'>SI</label>
+                                <input class='radio' id='fragil2-si' type=radio name=fragil value=1 required>
+                                <label class='radio' for='fragil2-si'>SI</label>
+                                
+                                <input class='radio' id='fragil2-no' type=radio name=fragil value=0 checked>
+                                <label class='radio' for='fragil2-no'>NO</label>";
+                            }
 
+                            if($perecedero){
+                                echo "<span>Perecedero:</span> 
+                                
+                                <input id='perecedero1-si' type=radio name=perecedero value=1 checked required>
+                                <label class='radio' for='perecedero1-si'>SI</label>
+                                
+                                <input id='perecedero1-no' type=radio name=perecedero value=0>
+                                <label class='radio' for='perecedero1-no'>NO</label>";
+                                
+                            } else {
+                                echo "<span>Perecedero:</span> 
+                                
+                                <input class='radio' type=radio id='perecedero2-si' name=perecedero value=1 required>
+                                <label class='radio' for='perecedero2-si'>SI</label>
+     
+                                <input class='radio' type=radio id='perecedero2-no' name=perecedero value=0 checked>
+                                <label class='radio' for='perecedero2-no'>NO</label>";
+                            }
 
-                            
-                            <input class='radio' id='fragil1-no' type=radio name=fragil value=0>
-                            <label class='radio' for='fragil1-no'>SI</label>";
-                            
-                            else   
-                            
-                            echo "<span>Fragil:</span> 
-
-                            
-                            <input class='radio' id='fragil2-si' type=radio name=fragil value=1 required>
-                            <label class='radio' for='fragil2-si'>SI</label>
-
-
-                            
-                            
-                            <input class='radio' id='fragil2-no' type=radio name=fragil value=0 checked><br>
-                            <label class='radio' for='fragil2-no'>SI</label>";
-
-                            if($perecedero)
-                            
-                            echo "
-                            <span>Perecedero:</span> 
-                            
-                            <input id='perecedero1-si' type=radio name=perecedero value=1 checked required>
-                            <label class='radio' for='perecedero1-si'>SI</label>
-                            
-                            <input id='perecedero1-no' type=radio name=perecedero value=0>
-                            <label class='radio' for='perecedero1-no'>NO</label>";
-                            
-                            else   
-                            
-                            echo "
-                            <span>Perecedero:</span> 
-                            
-                            <input class='radio' type=radio id='perecedero2-si' name=perecedero value=1 required>
-                            <label class='radio' for='perecedero2-si'>SI</label>
-
-                            
-							<input class='radio' type=radio id='perecedero2-no' name=perecedero value=0 checked>
-							<label class='radio' for='perecedero2-no'>NO</label>
-
-							<input type=submit name=modificar id=modificar value='Modificar paquete'>
+							echo "<input type=submit name=modificar id=modificar value='Modificar paquete'>
                             </form>";
 
                             if(array_key_exists("modificar", $_POST)){
@@ -273,16 +261,21 @@ if(!empty($_GET["m"])){
                                         echo "
                                         <div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
-                                    modificarPaquete($conexion, $codigoPaquete, $codigoModificado, $dirRemitente, $dirEnvio, $fragil, $perecedero);
+                                    if(!existePaquete($conexion, $codigoModificado))
+                                        modificarPaquete($conexion, $codigoPaquete, $codigoModificado, $dirRemitente, $dirEnvio, $fragil, $perecedero);
+                                    else{
+                                        if($codigoModificado == $codigoPaquete)
+                                            modificarPaquete($conexion, $codigoPaquete, $codigoModificado, $dirRemitente, $dirEnvio, $fragil, $perecedero);
+                                        else
+                                            echo "<div class='msj error'>Ya existe un paquete con ese codigo, por favor escoga uno diferente</div>";
 
-                        
+                                    }
+         
                                 } else {
                         
                                     echo "<div class='msj error'>No se encontraron datos.</div>";
                                 }
-                                
                             }
-
                         }
                     } else {
 
@@ -302,23 +295,20 @@ if(!empty($_GET["m"])){
             <span>Dir. Remitente:</span> 
             <input type=text name=dirRemitente placeholder='Ingrese Dir. de Remitente' required>
             <span>Dir. Envio:</span> 
-            <input type=text name=dirEnvio placeholder=Ingrese 'Ingrese Dir. de Envio' required><br>
-            <span>Fragil:</span> 
-
+            <input type=text name=dirEnvio placeholder='Ingrese Dir. de Envio' required><br>
             
+            <span>Fragil:</span> 
+           
             <input class='radio' id='fragil-agr-si' type=radio name=fragil value=1 checked required>
             <label class='radio' for='fragil-agr-si'>SI</label>
-
-            
+  
             <input class='radio' id='fragil-agr-no' type=radio name=fragil value=0>
             <label class='radio' for='fragil-agr-no'>NO</label>
 
             <span>Perecedero:</span> 
-
-            
+ 
             <input id='perecedero-agr-si' class='radio' type=radio name=perecedero value=1 checked required>
-            <label class='radio' for='perecedero-agr-si'>SI</label>
-			
+            <label class='radio' for='perecedero-agr-si'>SI</label>		
 			
             <input id='perecedero-agr-no' class='radio' type=radio name=perecedero value=0>       
             <label class='radio' for='perecedero-agr-no'>NO</label>
@@ -341,7 +331,10 @@ if(!empty($_GET["m"])){
                     if($conexion == '1')
                         echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
-                    agregarPaquete($conexion, $codigoPaquete, $dirRemitente, $dirEnvio, 1, 0);
+                    if(!existePaquete($conexion, $codigoPaquete))
+                        agregarPaquete($conexion, $codigoPaquete, $dirRemitente, $dirEnvio, $fragil, $perecedero);
+                    else
+                        echo "<div class='msj error'>Ya existe un paquete con ese codigo, por favor escoga uno diferente</div>";
         
                 } else {
         
@@ -453,7 +446,7 @@ if(!empty($_GET["m"])){
                             <span>Telefono:</span> 
                             <input type=text name=telefono placeholder='Ingrese telefono del transportista' value=$telefono required><br>
                             <span>Foto:</span> 
-                            <input type='file' name='foto' src='$foto' width='70' height='100' alt='Imagen no encontrada' required><br>
+                            <input type='file' name='foto' width='70' height='100' alt='Imagen no encontrada'><br>
                                       
                             <input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>;
                             </form>";
@@ -467,52 +460,64 @@ if(!empty($_GET["m"])){
                                     $apellidos = $_POST["apellidos"];
                                     $direccion = $_POST["direccion"];
                                     $telefono = $_POST["telefono"];
-                                    $foto = "";
 
-                                    if (is_uploaded_file($_FILES['foto']['tmp_name'])){
+                                    if(isset($_FILES["foto"])){
 
-                                        if ($_FILES["foto"]["error"] > 0) {
-                            
-                                            echo "Error: " . $_FILES["foto"]["error"] . "<br>";
-                                        } else {
-                            
-                                            $tmp_name = $_FILES["foto"]["tmp_name"];
-                                            $ruta = 'C:/wamp/www/Obligatorio/Fotos/Transportista';
-                                            $nombre =  $_FILES["foto"]["name"];
-                                            $extension = explode ("." , $_FILES["foto"]["name"]);
-                                            $extensionTipo = array('jpg','jpe','jpeg','png');
-                            
-                                            $subio = false;
+                                        if (is_uploaded_file($_FILES['foto']['tmp_name'])){
 
-                                            for($i = 0; $i < 4; $i++){
-                            
+                                            if ($_FILES["foto"]["error"] > 0) {
+                                
+                                                echo "Error: " . $_FILES["foto"]["error"] . "<br>";
+                                            } else {
+                                
+                                                $tmp_name = $_FILES["foto"]["tmp_name"];
+                                                $ruta = 'C:/wamp/www/Obligatorio/Fotos/Transportista';
+                                                $nombre =  $_FILES["foto"]["name"];
+                                                $extension = explode ("." , $_FILES["foto"]["name"]);
                                                 $tamanio = count($extension) - 1;
-                                                if($extension[$tamanio] == $extensionTipo[$i]){
+                                                $extensionTipo = array('jpg','jpe','jpeg','png');
 
-                                                    $move = $ruta."/".$cedulaModificada;
-                                                    
-                                                    if(move_uploaded_file($tmp_name, $move))
-                                                        $subio = true;
-                                            
+                                                $subio = false;
+                                                for($i = 0; $i < 4; $i++){
+                                
+                                                    if($extension[$tamanio] == $extensionTipo[$i]){
+    
+
+                                                        $move = $ruta . '/' . $cedulaModificada . '.' . $extensionTipo[$i];
+                                                        
+                                                        if(move_uploaded_file($tmp_name, $move)){
+                                                            $subio = true;
+                                                            $extension = $extensionTipo[$i];
+                                                        }
+                                                
+                                                    }
                                                 }
+                                                if (!$subio)
+                                                    echo "<div class='msj error'>El tipo de archivo no es compatible</div>";
+                                                else 
+                                                    $foto = 'Fotos/Transportista/' . $cedulaModificada . '.' . $extension;
+                                
                                             }
-                                            if (!$subio)
-                                                echo "<div class='msj error'>El tipo de archivo no es compatible</div>";
-                                            else 
-                                                $foto = 'Fotos/Transportista/' . $cedulaModificada;
-                            
                                         }
-                                    }
+                                    } else 
+                                        $foto = "";
 
                                     $conexion = crearConexion("localhost", "root", "", "obligatorio");
                                     if($conexion == '1')
                                         echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
-                                    modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto); 
+                                    if(!existeTransportista($conexion, $cedulaModificada))
+                                        modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto); 
+                                    else{
+                                        if($cedulaModificada == $cedulaTransportista)
+                                            modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto); 
+                                        else    
+                                            echo "<div class='msj error'>Ya existe un transportista con esa cedula</div>";
+                                    }
                         
                                 } else {
                         
-                                    echo "<div class='msj error'>No se encontraron datos.</div>";
+                                    echo "<div class='msj error'>No se encontraron datos</div>";
                                 }
                             }
                         }
@@ -575,17 +580,19 @@ if(!empty($_GET["m"])){
                                 $tamanio = count($extension) - 1;
                                 if($extension[$tamanio] == $extensionTipo[$i]){
                                     
-                                    $move = $ruta."/".$cedulaTransportista;
+                                    $move = $ruta . '/' . $cedulaTransportista . "." . $extensionTipo[$i];
                                                     
-                                    if(move_uploaded_file($tmp_name, $move))
+                                    if(move_uploaded_file($tmp_name, $move)){
+                                        
+                                        $extension = $extensionTipo[$i];
                                         $subio = true;
-                            
+                                    }
                                 }   
                             }
                             if (!$subio)
                                 echo "<div class='msj error'>El tipo de archivo no es compatible</div>";
                             else 
-                                $foto = 'Fotos/Transportista/' . $cedulaTransportista;
+                                $foto = 'Fotos/Transportista/' . $cedulaTransportista . '.' . $extension;
             
                         }
                     }
@@ -594,8 +601,11 @@ if(!empty($_GET["m"])){
                     if($conexion == '1')
                         echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
-                    agregarTransportista($conexion, $cedulaTransportista, $nombres, $apellidos, $direccion, $telefono, $foto, $pin);
-        
+                    if(!existeTransportista($conexion, $cedulaTransportista))
+                        agregarTransportista($conexion, $cedulaTransportista, $nombres, $apellidos, $direccion, $telefono, $foto, $pin);
+                    else
+                        echo "<div class='msj error'>Ya existe un transportista con esa cedula</div>";
+
                 } else {
         
                     echo "<div class='msj error'>No se encontraron datos.</div>";

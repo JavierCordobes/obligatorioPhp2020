@@ -678,19 +678,32 @@
 
     }
 
+    function existePaquete($conexion, $codigo){
+
+        $consulta = mysqli_query($conexion, "SELECT codigo FROM paquete WHERE codigo = '$codigo'");
+
+        if($consulta)
+            return true;
+        else
+            return false;
+    }
+
     function agregarPaquete($conexion, $codigo, $dirRemitente, $dirEnvio, $fragil, $perecedero){
 
         $consulta = mysqli_query($conexion, "INSERT INTO paquete(codigo, dirRemitente, dirEnvio, fragil, perecedero) VALUES ('$codigo', '$dirRemitente', '$dirEnvio', '$fragil', '$perecedero')");
 
         if($consulta){
-
+        
             cerrarConexion($conexion);
-            echo "El paquete se agrego exitosamente, regresando al inicio...";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
+            echo "<div class='msj ok'>El paquete se agrego exitosamente</div>";
+            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=2'>";
             die();
+
         } else {
+
             echo "Ocurrio un error en la consulta";
         }
+      
         cerrarConexion($conexion);
     }
 
@@ -701,8 +714,8 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj ok'>El paquete se actualizo exitosamente, regresando al inicio...</div>";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
+            echo "<div class='msj ok'>El paquete se actualizo exitosamente</div>";
+            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=2'>";
             die();
         } else {
             echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
@@ -717,8 +730,8 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "El paquete se elimino exitosamente, regresando al inicio...";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
+            echo "<div class='msj alerta'>El paquete se elimino exitosamente</div>";
+            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=2'>";
             die();
         } else {
             echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
@@ -773,6 +786,16 @@
 
     }
 
+    function existeTransportista($conexion, $cedula){
+
+        $consulta = mysqli_query($conexion, "SELECT cedula FROM transportista WHERE cedula = '$cedula'");
+
+        if($consulta)
+            return true;
+        else
+            return false;
+    }
+
     function agregarTransportista($conexion, $cedula, $nombres, $apellidos, $direccion, $telefono, $foto, $pin){
 
         $consulta = mysqli_query($conexion, "INSERT INTO transportista(cedula, nombres, apellidos, direccion, telefono, foto, pin) VALUES ('$cedula', '$nombres', '$apellidos', '$direccion', '$telefono', '$foto', '$pin')");
@@ -780,8 +803,8 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj ok'>El transportista se agrego exitosamente, regresando al inicio...</div>";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
+            echo "<div class='msj ok'>El transportista se agrego exitosamente</div>";
+            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=3'>";
             die();
         } else {
             echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
@@ -796,8 +819,8 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj alerta'>El transportista se actualizo exitosamente, regresando al inicio...</div>";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
+            echo "<div class='msj alerta'>El transportista se actualizo exitosamente</div>";
+            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=3'>";
             die();
         } else {
             echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
@@ -812,8 +835,8 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj alerta'>El transportista se elimino exitosamente, regresando al inicio...</div>";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
+            echo "<div class='msj alerta'>El transportista se elimino exitosamente</div>";
+            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=2'>";
             die();
         } else {
             echo "<div class='msj error'>Ocurrio un error en la consulta</div>";

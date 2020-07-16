@@ -38,7 +38,7 @@
         if(isset($_SESSION["tiempo"])){
 
             //tiempo en segundos para dar vida a la sesion
-            $cierre = 5;
+            $cierre = 3600;
 
             $vidaSesion = time() - $_SESSION["tiempo"];
 
