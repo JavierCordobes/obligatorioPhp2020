@@ -8,7 +8,6 @@ abstract class Persona{
     private $foto;
     private $eliminado;
 
-
 }
 
 class Encargado extends Persona{
@@ -27,7 +26,8 @@ class Encargado extends Persona{
 
     function agregar($conexion, $pin){
 
-        $consulta = mysqli_query($conexion, "INSERT INTO encargado(cedula, nombres, apellidos, email, foto, pin) VALUES ('$this->cedula', '$this->nombres', '$this->apellidos', '$this->email', '$this->foto', '$pin')");
+        $pinMD5 = md5($pin);
+        $consulta = mysqli_query($conexion, "INSERT INTO encargado(cedula, nombres, apellidos, email, foto, pin) VALUES ('$this->cedula', '$this->nombres', '$this->apellidos', '$this->email', '$this->foto', '$pinMD5')");
 
         if($consulta){
 
@@ -76,12 +76,13 @@ class Transportista extends Persona{
 
     function agregar($conexion, $pin){
 
-        $consulta = mysqli_query($conexion, "INSERT INTO transportista(cedula, nombres, apellidos, direccion, telefono, foto, pin) VALUES ('$this->cedula', '$this->nombres', '$this->apellidos', '$this->direccion', '$this->telefono', '$this->foto', '$pin')");
+        $pinMD5 = md5($pin);
+        $consulta = mysqli_query($conexion, "INSERT INTO transportista(cedula, nombres, apellidos, direccion, telefono, foto, pin) VALUES ('$this->cedula', '$this->nombres', '$this->apellidos', '$this->direccion', '$this->telefono', '$this->foto', '$pinMD5')");
 
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "<div class='msj ok'>El transportista se agrego exitosamente</div>";
+            echo "<div class='msj ok'>El transportista se agrego exitosamente, pin = $pinMD5</div>";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=3'>";
             die();
         } else {

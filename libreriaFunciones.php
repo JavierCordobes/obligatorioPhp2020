@@ -47,8 +47,10 @@
                 $pinBD = $filaAsociativa["pin"];
                 $nomBD = $filaAsociativa["nombres"];
                 $apeBD = $filaAsociativa["apellidos"];
+                $PIN_MD5 = md5($PIN);
 
-                if($PIN == $pinBD){
+
+                if($PIN_MD5 == $pinBD){
 
                     session_start();
                     $_SESSION["cedula"] = $ciBD;
@@ -83,8 +85,10 @@
                 $pinBD = $filaAsociativa["pin"];
                 $nomBD = $filaAsociativa["nombres"];
                 $apeBD = $filaAsociativa["apellidos"];
+                $PIN_MD5 = md5($PIN);
 
-                if($PIN == $pinBD){
+
+                if($PIN_MD5 == $pinBD){
 
                     //ingreso de datos a session
                     session_start();

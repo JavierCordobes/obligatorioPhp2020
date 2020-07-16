@@ -201,11 +201,11 @@ if(!empty($_GET["m"])){
                             echo "
                             <form method=POST name=modificar>
                             <span>Codigo:</span> 
-                            <input type=text name=codigo placeholder='Ingresar codigo del paquete' value=$codigo maxlength=16 required><br>
+                            <input type=text name=codigo placeholder='Ingresar codigo del paquete' value='$codigo' maxlength=16 required><br>
                             <span>Dir. Remitente:</span> 
-                            <input type=text name=dirRemitente placeholder='Ingrese Dir. del Remitente' value=$dirRemitente maxlength=45 required><br>
+                            <input type=text name=dirRemitente placeholder='Ingrese Dir. del Remitente' value='$dirRemitente' maxlength=45 required><br>
                             <span>Dir. Envio:</span> 
-                            <input type=text name=dirEnvio placeholder='Ingrese Dir. de Envio' value=$dirEnvio maxlength=45 required><br>";
+                            <input type=text name=dirEnvio placeholder='Ingrese Dir. de Envio' value='$dirEnvio' maxlength=45 required><br>";
 
                             if($fragil){
                                 echo "<span>Fragil:</span> 
@@ -438,15 +438,15 @@ if(!empty($_GET["m"])){
                             echo "
                             <form method='POST' name='modificar' enctype='multipart/form-data'>
                             <span>Cedula:</span> 
-                            <input type=text name=cedula placeholder='Ingresar cedula del transportista' value='$cedula' maxlength=15 required><br>
+                            <input type=text name='cedula' placeholder='Ingresar cedula del transportista' value='$cedula' maxlength=15 required><br>
                             <span>Nombres:</span> 
-                            <input type=text name=nombres placeholder='Ingrese nombres del transportista' value='$nombres' maxlength=45 required><br>
+                            <input type=text name='nombres' placeholder='Ingrese nombres del transportista' value='$nombres' maxlength=45 required><br>
                             <span>Apellidos:</span> 
-                            <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' value='$apellidos' maxlength=45 required><br>
+                            <input type=text name='apellidos' placeholder='Ingrese apellidos del transportista' value='$apellidos' maxlength=45 required><br>
                             <span>Direccion:</span> 
-                            <input type=text name=direccion placeholder='Ingresar direccion del transportista' value='$direccion' maxlength=45 required><br>
+                            <input type=text name='direccion' placeholder='Ingresar direccion del transportista' value='$direccion' maxlength=45 required><br>
                             <span>Telefono:</span> 
-                            <input type=text name=telefono placeholder='Ingrese telefono del transportista' value='$telefono' maxlength=45 required><br>
+                            <input type=text name='telefono' placeholder='Ingrese telefono del transportista' value='$telefono' maxlength=45 required><br>
 
 
                             <!-- modificar imagen -->
@@ -466,10 +466,7 @@ if(!empty($_GET["m"])){
                             
                             <input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>
                             </form>";
-/*
-                            <span>Foto:</span> 
-                            <input type='file' name='foto' width='70' height='100' alt='Imagen no encontrada'><br>
-*/
+
 
                             if(array_key_exists("modificar", $_POST)){
 
@@ -555,19 +552,19 @@ if(!empty($_GET["m"])){
         if(isset($_GET["a"])){
 
             echo"
-            <form method=POST name=agregar enctype='multipart/form-data'>
+            <form method='POST' name='agregar' enctype='multipart/form-data'>
 	            <span>Cedula:</span>
-	            <input type=text name=cedula placeholder='Ingresar cedula del transportista' maxlength=15 required><br>
+	            <input type=text name='cedula' placeholder='Ingresar cedula del transportista' maxlength=15 required><br>
 	            <span>Nombres:</span> 
-	            <input type=text name=nombres placeholder='Ingrese nombres del transportista' maxlength=45 required><br>
+	            <input type=text name='nombres' placeholder='Ingrese nombres del transportista' maxlength=45 required><br>
 	            <span>Apellidos:</span> 
-	            <input type=text name=apellidos placeholder='Ingrese apellidos del transportista' maxlength=45 required><br>
+	            <input type=text name='apellidos' placeholder='Ingrese apellidos del transportista' maxlength=45 required><br>
 	            <span>Direccion:</span> 
-	            <input type=text name=direccion placeholder='Ingresar direccion del transportista' maxlength=45 required><br>
+	            <input type=text name='direccion' placeholder='Ingresar direccion del transportista' maxlength=45 required><br>
 	            <span>Telefono:</span> 
-	            <input type=text name=telefono placeholder='Ingrese telefono del transportista' maxlength=45 required><br>
+	            <input type=text name='telefono' placeholder='Ingrese telefono del transportista' maxlength=45 required><br>
 	            <span>PIN:</span> 
-	            <input type=text name=pin placeholder='Ingrese PIN para iniciar su sesion' maxlength=6 required><br>
+	            <input type=password name='pin' placeholder='Ingrese PIN para iniciar su sesion' maxlength=20 required><br>
 	            <span>Foto:</span> 
 	            <input type='file' name='foto' required><br>
 	                        
