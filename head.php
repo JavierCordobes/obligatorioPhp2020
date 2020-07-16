@@ -43,4 +43,26 @@
     <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script>
     <![endif]-->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+
+             $( '#img-modificar-1' ).on( 'click', function() {
+                if( $(this).is(':checked') ){
+                   $('#mostrar-file').show();
+               }
+   
+            });
+
+             $( '#img-modificar-2' ).on( 'click', function() {
+                if( $(this).is(':checked') ){
+                   $('#mostrar-file').hide();
+                } 
+            });
+
+        });
+
+
+    </script>
   </head>

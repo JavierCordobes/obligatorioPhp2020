@@ -1,5 +1,8 @@
 <?php 
 
+include('Clases/clases.php');
+$transportista = new Transportista();
+
 if(!empty($_GET["m"])){
 
     $metodo = $_GET["m"];
@@ -431,8 +434,7 @@ if(!empty($_GET["m"])){
                             $direccion = $arrayLista[$numTransportista]["direccion"];
                             $telefono = $arrayLista[$numTransportista]["telefono"];
                             $foto = $arrayLista[$numTransportista]["foto"];
-
-
+                            
                             echo "
                             <form method=POST name=modificar enctype='multipart/form-data'>
                             <span>Cedula:</span> 
@@ -445,11 +447,29 @@ if(!empty($_GET["m"])){
                             <input type=text name=direccion placeholder='Ingresar direccion del transportista' value=$direccion maxlength=45 required><br>
                             <span>Telefono:</span> 
                             <input type=text name=telefono placeholder='Ingrese telefono del transportista' value=$telefono maxlength=45 required><br>
+
+
+                            <!-- modificar imagen -->
+                            <span>Desea modificar su imagen</span>
+                            <input type='radio' class='radio' id='img-modificar-1' name='img_modificar' value='1' required>
+                            <label for='img-modificar-1' class='radio'>SI</label>
+
+                            <input type='radio' class='radio' id='img-modificar-2' name='img_modificar' value='0' checked>
+                            <label for='img-modificar-2' class='radio'>NO</label>
+
+
+                            <section id='mostrar-file'>
+                                <span>Foto:</span> 
+                                <input type='file' name='foto' width='70' height='100' alt='Imagen no encontrada'><br>
+                            </section>
+                                      
+                            
+                            <input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>
+                            </form>";
+/*
                             <span>Foto:</span> 
                             <input type='file' name='foto' width='70' height='100' alt='Imagen no encontrada'><br>
-                                      
-                            <input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>;
-                            </form>";
+*/
 
                             if(array_key_exists("modificar", $_POST)){
 
@@ -471,7 +491,8 @@ if(!empty($_GET["m"])){
                                             } else {
                                 
                                                 $tmp_name = $_FILES["foto"]["tmp_name"];
-                                                $ruta = 'C:/wamp/www/Obligatorio/Fotos/Transportista';
+                                                $ruta = 'Fotos/Transportista';
+                                                //$ruta = $baseUrl.'Fotos/Transportista';
                                                 $nombre =  $_FILES["foto"]["name"];
                                                 $extension = explode ("." , $_FILES["foto"]["name"]);
                                                 $tamanio = count($extension) - 1;
@@ -506,12 +527,16 @@ if(!empty($_GET["m"])){
                                     if($conexion == '1')
                                         echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
-                                    if(!existeTransportista($conexion, $cedulaModificada))
+                                    if(!existeTransportista($conexion, $cedulaModificada)){
+
+                                        
                                         modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto); 
-                                    else{
-                                        if($cedulaModificada == $cedulaTransportista)
-                                            modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto); 
-                                        else    
+                                    } else {
+                                        if($cedulaModificada == $cedulaTransportista){
+
+
+                                            modificarTransportista($conexion, $cedulaTransportista, $cedulaModificada, $nombres, $apellidos, $direccion, $telefono, $foto);
+                                        } else
                                             echo "<div class='msj error'>Ya existe un transportista con esa cedula</div>";
                                     }
                         
@@ -568,7 +593,7 @@ if(!empty($_GET["m"])){
                         } else {
             
                             $tmp_name = $_FILES["foto"]["tmp_name"];
-                            $ruta = 'C:/wamp/www/obligatorio/Fotos/Transportista';
+                            $ruta = 'Fotos/Transportista';
                             $nombre =  $_FILES["foto"]["name"];
                             $extension = explode ("." , $_FILES["foto"]["name"]);
                             $extensionTipo = array('jpg','jpe','jpeg','png');

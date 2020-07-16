@@ -1,6 +1,6 @@
 <?php
 
-
+    //$baseUrl = 'C:/wamp/www/Obligatorio/';
     // CONEXION SQL
     function conectarSQL($ip = "localhost", $user = "root", $pass = ""){
 
@@ -310,7 +310,7 @@
         if($consulta){
 
             cerrarConexion($conexion);
-            echo "Se actualizo el paquete, regresando al inicio...";
+            echo "<div class='msj ok'>Se actualizo el paquete, regresando al inicio...</div>";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         } else {
@@ -451,7 +451,7 @@
         } else {
 
             cerrarConexion($conexion);
-            echo "Se actualizo el paquete, regresando al inicio...";
+            echo "<div class='msj ok'>Se actualizo el paquete, regresando al inicio...</div>";
             echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=1'>";
             die();
         }
@@ -682,7 +682,9 @@
 
         $consulta = mysqli_query($conexion, "SELECT codigo FROM paquete WHERE codigo = '$codigo'");
 
-        if($consulta)
+        $cant_filas = mysqli_num_rows($consulta);
+
+        if($cant_filas > 0)
             return true;
         else
             return false;
@@ -790,7 +792,9 @@
 
         $consulta = mysqli_query($conexion, "SELECT cedula FROM transportista WHERE cedula = '$cedula'");
 
-        if($consulta)
+        $cant_filas = mysqli_num_rows($consulta);
+
+        if($cant_filas > 0)
             return true;
         else
             return false;
@@ -836,7 +840,7 @@
 
             cerrarConexion($conexion);
             echo "<div class='msj alerta'>El transportista se elimino exitosamente</div>";
-            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=2'>";
+            echo "<meta http-equiv='refresh' content='1;url=inicio.php?m=3'>";
             die();
         } else {
             echo "<div class='msj error'>Ocurrio un error en la consulta</div>";
