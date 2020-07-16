@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-07-2020 a las 22:19:13
+-- Tiempo de generación: 17-07-2020 a las 01:53:05
 -- Versión del servidor: 5.6.17
 -- Versión de PHP: 5.5.12
 
@@ -28,6 +28,7 @@ USE `obligatorio`;
 -- Estructura de tabla para la tabla `encargado`
 --
 
+DROP TABLE IF EXISTS `encargado`;
 CREATE TABLE IF NOT EXISTS `encargado` (
   `cedula` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
   `nombres` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
@@ -53,6 +54,7 @@ INSERT INTO `encargado` (`cedula`, `nombres`, `apellidos`, `email`, `pin`, `foto
 -- Estructura de tabla para la tabla `paquete`
 --
 
+DROP TABLE IF EXISTS `paquete`;
 CREATE TABLE IF NOT EXISTS `paquete` (
   `codigo` varchar(16) COLLATE utf8_spanish_ci NOT NULL,
   `dirRemitente` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
@@ -89,6 +91,7 @@ INSERT INTO `paquete` (`codigo`, `dirRemitente`, `dirEnvio`, `fragil`, `perecede
 -- Estructura de tabla para la tabla `transportista`
 --
 
+DROP TABLE IF EXISTS `transportista`;
 CREATE TABLE IF NOT EXISTS `transportista` (
   `cedula` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
   `nombres` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
@@ -117,7 +120,7 @@ INSERT INTO `transportista` (`cedula`, `nombres`, `apellidos`, `direccion`, `tel
 -- Filtros para la tabla `paquete`
 --
 ALTER TABLE `paquete`
-  ADD CONSTRAINT `fk` FOREIGN KEY (`ciTransportista`) REFERENCES `transportista` (`cedula`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_p.t` FOREIGN KEY (`ciTransportista`) REFERENCES `transportista` (`cedula`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

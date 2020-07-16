@@ -428,122 +428,128 @@ if(!empty($_GET["m"])){
                             eliminarTransportista($conexion, $cedulaTransportista);
 
                         } else {
-
-                            $cedula = $arrayLista[$numTransportista]["cedula"];
-                            $nombres = $arrayLista[$numTransportista]["nombres"];
-                            $apellidos = $arrayLista[$numTransportista]["apellidos"];
-                            $direccion = $arrayLista[$numTransportista]["direccion"];
-                            $telefono = $arrayLista[$numTransportista]["telefono"];
-                            $foto = $arrayLista[$numTransportista]["foto"];
                             
-                            echo "
-                            <form method='POST' name='modificar' enctype='multipart/form-data'>
-                            <span>Cedula:</span> 
-                            <input type=text name='cedula' placeholder='Ingresar cedula del transportista' value='$cedula' maxlength=15 required><br>
-                            <span>Nombres:</span> 
-                            <input type=text name='nombres' placeholder='Ingrese nombres del transportista' value='$nombres' maxlength=45 required><br>
-                            <span>Apellidos:</span> 
-                            <input type=text name='apellidos' placeholder='Ingrese apellidos del transportista' value='$apellidos' maxlength=45 required><br>
-                            <span>Direccion:</span> 
-                            <input type=text name='direccion' placeholder='Ingresar direccion del transportista' value='$direccion' maxlength=45 required><br>
-                            <span>Telefono:</span> 
-                            <input type=text name='telefono' placeholder='Ingrese telefono del transportista' value='$telefono' maxlength=45 required><br>
+                            $conexion = crearConexion("localhost", "root", "", "obligatorio");
+                            if($conexion == '1')
+                                echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
+                            $asignado = tienePaqueteAsignado($conexion, $cedulaTransportista);
+                            if(!$asignado){
 
-
-                            <!-- modificar imagen -->
-                            <span>Desea modificar su imagen</span>
-                            <input type='radio' class='radio' id='img-modificar-1' name='img_modificar' value='1' required>
-                            <label for='img-modificar-1' class='radio'>SI</label>
-
-                            <input type='radio' class='radio' id='img-modificar-2' name='img_modificar' value='0' checked>
-                            <label for='img-modificar-2' class='radio'>NO</label>
-
-
-                            <section id='mostrar-file'>
-                                <span>Foto:</span> 
-                                <input type='file' name='foto'><br>
-                            </section>
-                                      
-                            
-                            <input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>
-                            </form>";
-
-
-                            if(array_key_exists("modificar", $_POST)){
-
-                                if(!empty($_POST)) {
-                                                                                        
-                                    $cedulaModificada = $_POST["cedula"];
-                                    $nombres = $_POST["nombres"];
-                                    $apellidos = $_POST["apellidos"];
-                                    $direccion = $_POST["direccion"];
-                                    $telefono = $_POST["telefono"];
-
-                                    if(isset($_FILES["foto"])){
-
-                                        if (is_uploaded_file($_FILES['foto']['tmp_name'])){
-
-                                            if ($_FILES["foto"]["error"] > 0) {
+                                $cedula = $arrayLista[$numTransportista]["cedula"];
+                                $nombres = $arrayLista[$numTransportista]["nombres"];
+                                $apellidos = $arrayLista[$numTransportista]["apellidos"];
+                                $direccion = $arrayLista[$numTransportista]["direccion"];
+                                $telefono = $arrayLista[$numTransportista]["telefono"];
+                                $foto = $arrayLista[$numTransportista]["foto"];
                                 
-                                                echo "Error: " . $_FILES["foto"]["error"] . "<br>";
-                                            } else {
-                                
-                                                $tmp_name = $_FILES["foto"]["tmp_name"];
-                                                $ruta = 'Fotos/Transportista';
-                                                //$ruta = $baseUrl.'Fotos/Transportista';
-                                                $nombre =  $_FILES["foto"]["name"];
-                                                $extension = explode ("." , $_FILES["foto"]["name"]);
-                                                $tamanio = count($extension) - 1;
-                                                $extensionTipo = array('jpg','jpe','jpeg','png');
+                                echo "
+                                <form method='POST' name='modificar' enctype='multipart/form-data'>
+                                <span>Cedula:</span> 
+                                <input type=text name='cedula' placeholder='Ingresar cedula del transportista' value='$cedula' maxlength=15 required><br>
+                                <span>Nombres:</span> 
+                                <input type=text name='nombres' placeholder='Ingrese nombres del transportista' value='$nombres' maxlength=45 required><br>
+                                <span>Apellidos:</span> 
+                                <input type=text name='apellidos' placeholder='Ingrese apellidos del transportista' value='$apellidos' maxlength=45 required><br>
+                                <span>Direccion:</span> 
+                                <input type=text name='direccion' placeholder='Ingresar direccion del transportista' value='$direccion' maxlength=45 required><br>
+                                <span>Telefono:</span> 
+                                <input type=text name='telefono' placeholder='Ingrese telefono del transportista' value='$telefono' maxlength=45 required><br>
 
-                                                $subio = false;
-                                                for($i = 0; $i < 4; $i++){
-                                
-                                                    if($extension[$tamanio] == $extensionTipo[$i]){
-    
 
-                                                        $move = $ruta . '/' . $cedulaModificada . '.' . $extensionTipo[$i];
-                                                        
-                                                        if(move_uploaded_file($tmp_name, $move)){
-                                                            $subio = true;
-                                                            $extension = $extensionTipo[$i];
-                                                        }
-                                                
-                                                    }
-                                                }
-                                                if (!$subio)
-                                                    echo "<div class='msj error'>El tipo de archivo no es compatible</div>";
-                                                else 
-                                                    $foto = 'Fotos/Transportista/' . $cedulaModificada . '.' . $extension;
+                                <!-- modificar imagen -->
+                                <span>Desea modificar su imagen</span>
+                                <input type='radio' class='radio' id='img-modificar-1' name='img_modificar' value='1' required>
+                                <label for='img-modificar-1' class='radio'>SI</label>
+
+                                <input type='radio' class='radio' id='img-modificar-2' name='img_modificar' value='0' checked>
+                                <label for='img-modificar-2' class='radio'>NO</label>
+
+
+                                <section id='mostrar-file'>
+                                    <span>Foto:</span> 
+                                    <input type='file' name='foto'><br>
+                                </section>
+                                        
                                 
-                                            }
-                                        }
-                                    } else 
-                                        $foto = "";
+                                <input type=submit name=modificar id=modificar value='Modificar datos de Transportista'><br>
+                                </form>";
+
+
+                                if(array_key_exists("modificar", $_POST)){
+
+                                    if(!empty($_POST)) {
+                                                                                            
+                                        $cedulaModificada = $_POST["cedula"];
+                                        $nombres = $_POST["nombres"];
+                                        $apellidos = $_POST["apellidos"];
+                                        $direccion = $_POST["direccion"];
+                                        $telefono = $_POST["telefono"];
+
+                                        if(isset($_FILES["foto"])){
+
+                                            if (is_uploaded_file($_FILES['foto']['tmp_name'])){
+
+                                                if ($_FILES["foto"]["error"] > 0) {
                                     
+                                                    echo "Error: " . $_FILES["foto"]["error"] . "<br>";
+                                                } else {
+                                    
+                                                    $tmp_name = $_FILES["foto"]["tmp_name"];
+                                                    $ruta = 'Fotos/Transportista';
+                                                    //$ruta = $baseUrl.'Fotos/Transportista';
+                                                    $nombre =  $_FILES["foto"]["name"];
+                                                    $extension = explode ("." , $_FILES["foto"]["name"]);
+                                                    $tamanio = count($extension) - 1;
+                                                    $extensionTipo = array('jpg','jpe','jpeg','png');
 
-                                    $conexion = crearConexion("localhost", "root", "", "obligatorio");
-                                    if($conexion == '1')
-                                        echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
+                                                    $subio = false;
+                                                    for($i = 0; $i < 4; $i++){
+                                    
+                                                        if($extension[$tamanio] == $extensionTipo[$i]){
+        
 
-                                    if(!existeTransportista($conexion, $cedulaModificada)){
+                                                            $move = $ruta . '/' . $cedulaModificada . '.' . $extensionTipo[$i];
+                                                            
+                                                            if(move_uploaded_file($tmp_name, $move)){
+                                                                $subio = true;
+                                                                $extension = $extensionTipo[$i];
+                                                            }
+                                                    
+                                                        }
+                                                    }
+                                                    if (!$subio)
+                                                        echo "<div class='msj error'>El tipo de archivo no es compatible</div>";
+                                                    else 
+                                                        $foto = 'Fotos/Transportista/' . $cedulaModificada . '.' . $extension;
+                                    
+                                                }
+                                            }
+                                        } else 
+                                            $foto = "";
+                                        
 
-                                        $transportista->seteoDatos($cedulaModificada, $nombres, $apellidos, $foto, $direccion, $telefono);
-                                        $transportista->modificar($conexion, $cedulaTransportista);
-                                    } else {
-                                        if($cedulaModificada == $cedulaTransportista){
+                                        $conexion = crearConexion("localhost", "root", "", "obligatorio");
+                                        if($conexion == '1')
+                                            echo "<div class='msj error'>Hubo un error al conectarnos a la base de datos</div>";
 
+                                        if(!existeTransportista($conexion, $cedulaModificada)){
                                             $transportista->seteoDatos($cedulaModificada, $nombres, $apellidos, $foto, $direccion, $telefono);
                                             $transportista->modificar($conexion, $cedulaTransportista);
-                                        } else
-                                            echo "<div class='msj error'>Ya existe un transportista con esa cedula</div>";
+                                        } else {
+                                            if($cedulaModificada == $cedulaTransportista){            
+                                                $transportista->seteoDatos($cedulaModificada, $nombres, $apellidos, $foto, $direccion, $telefono);
+                                                $transportista->modificar($conexion, $cedulaTransportista);
+                                            } else
+                                                echo "<div class='msj error'>Ya existe un transportista con esa cedula</div>";
+                                        }
+                            
+                                    } else {
+                            
+                                        echo "<div class='msj error'>No se encontraron datos</div>";
                                     }
-                        
-                                } else {
-                        
-                                    echo "<div class='msj error'>No se encontraron datos</div>";
                                 }
-                            }
+                            } else 
+                                echo "<div class='msj error'>El transportista no se puede actualizar porque tiene un paquete asignado</div>";
                         }
                     }
                 }

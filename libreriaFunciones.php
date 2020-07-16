@@ -66,10 +66,13 @@
                 } else {
 
                     $msjIngreso = "Cedula y PIN no coinciden, pruebe nuevamente.";
+                    echo '<div class="msj error">'.$msjIngreso.'</div>';
+
                 }
             } else {
 
                 $msjIngreso = "No se encontro el encargado en el sistema.";
+                echo '<div class="msj error">'.$msjIngreso.'</div>';
             }
 
         } else if($tipo == "tr"){
@@ -260,6 +263,7 @@
 
             if($cant_filas > 0){
 
+                $noAsignado = true;
                 for($i = 0; $i < $cant_filas; $i++){
                     $filaAsociativa = mysqli_fetch_array($consulta);
 
@@ -274,17 +278,19 @@
 
                         $msjAsignado = "Ya tiene un paquete asignado, el codigo del paquete es: $codigo, y le fue asignado el dia: $fechaAsignacion.";
                         echo '<div class="msj error">'.$msjAsignado.'</div>';
+                        $noAsignado = false;      
 
-                    } else {
+                    } 
+                }
 
-                        echo "<br> <form name=asignar method=POST action=''>";
-                        echo "Ingrese una fecha estimada de entrega para el paquete: ";
-                        echo "<input type=date name=fechaEstimada required>";
-                        echo "<input type=submit name=asignar id=asignar value=ASIGNAR>";
+                if($noAsignado){
 
-                        echo "</form>";
-                    }
+                    echo "<br> <form name=asignar method=POST action=''>";
+                    echo "Ingrese una fecha estimada de entrega para el paquete: ";
+                    echo "<input type=date name=fechaEstimada required>";
+                    echo "<input type=submit name=asignar id=asignar value=ASIGNAR>";
 
+                    echo "</form>";
                 }
             } else {
 
